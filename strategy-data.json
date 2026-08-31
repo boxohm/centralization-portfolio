@@ -1,0 +1,70 @@
+{
+ "fed_funds": {
+  "date": "2026-08-27",
+  "value": 3.63
+ },
+ "core_pce": {
+  "date": "2026-07-01",
+  "yoy": 3.34
+ },
+ "core_cpi": {
+  "date": "2026-07-01",
+  "yoy": 2.47
+ },
+ "ust10y": {
+  "date": "2026-08-27",
+  "value": 4.67
+ },
+ "ust30y": {
+  "date": "2026-08-27",
+  "value": 5.19
+ },
+ "bill3m": {
+  "date": "2026-08-27",
+  "value": 3.69
+ },
+ "breakeven_5y5y": {
+  "date": "2026-08-28",
+  "value": 2.32
+ },
+ "term_premium": {
+  "date": "2026-08-21",
+  "value": 0.8682
+ },
+ "ig_oas": {
+  "date": "2026-08-28",
+  "value": 0.79,
+  "tight_52w": 0.73,
+  "widening_bps": 6
+ },
+ "hy_oas": {
+  "date": "2026-08-28",
+  "value": 2.6,
+  "tight_52w": 2.6,
+  "widening_bps": 0
+ },
+ "qqq": {
+  "date": "2026-08-31",
+  "close": 714.33,
+  "ath": 746.16,
+  "drawdown_pct": -4.3,
+  "above_200dma": true
+ },
+ "smh": {
+  "date": "2026-08-31",
+  "close": 554.51,
+  "above_252dma": true
+ },
+ "bills_share": {
+  "date": "2026-07-31",
+  "bills_pct": 22.2
+ },
+ "as_of": "2026-08-31 17:26 UTC",
+ "real_policy_rate": 0.29,
+ "repression_on": true,
+ "amber_tells": [],
+ "red_flags": [],
+ "manual_flags": {},
+ "regime": "GREEN",
+ "errors": []
+}

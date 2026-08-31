@@ -1,0 +1,579 @@
+<title>The Centralization Portfolio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --bg:#fcfcfb; --bg-raised:#f4f3ef; --bg-inset:#efeeea;
+    --ink:#100f0d; --ink-2:#52514e; --ink-3:#87857c;
+    --line:#e4e2db; --line-strong:#c9c6bc;
+    --accent:#1c5cab; --accent-ink:#164a8a;
+    --warnbox-bg:#faf1ec; --warnbox-line:#e0b9a4; --warnbox-ink:#8a3d1e;
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300;
+    --chip-ink:#3d3c38;
+    --good:#1a6b2f; --good-bg:#e4f2e8; --warn:#7a4f00; --warn-bg:#fbf0d2; --crit:#a3261c; --crit-bg:#fae6e3;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg:#1a1a19; --bg-raised:#232321; --bg-inset:#2a2a27;
+      --ink:#f5f4f0; --ink-2:#c3c2b7; --ink-3:#8f8e85;
+      --line:#34342f; --line-strong:#4a4a43;
+      --accent:#6da7ec; --accent-ink:#86b6ef;
+      --warnbox-bg:#2b211b; --warnbox-line:#6b4630; --warnbox-ink:#e8a97f;
+      --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300;
+      --chip-ink:#d6d5cc;
+      --good:#6fd18a; --good-bg:#16301e; --warn:#f2c05c; --warn-bg:#33280f; --crit:#ff8a80; --crit-bg:#3b1b18;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:#1a1a19; --bg-raised:#232321; --bg-inset:#2a2a27;
+    --ink:#f5f4f0; --ink-2:#c3c2b7; --ink-3:#8f8e85;
+    --line:#34342f; --line-strong:#4a4a43;
+    --accent:#6da7ec; --accent-ink:#86b6ef;
+    --warnbox-bg:#2b211b; --warnbox-line:#6b4630; --warnbox-ink:#e8a97f;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300;
+    --chip-ink:#d6d5cc;
+    --good:#6fd18a; --good-bg:#16301e; --warn:#f2c05c; --warn-bg:#33280f; --crit:#ff8a80; --crit-bg:#3b1b18;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink); margin:0;
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size:16.5px; line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px 96px}
+  .prose{max-width:730px}
+  h1,h2,h3{font-family:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0}
+  a{color:var(--accent-ink); text-decoration-color:color-mix(in srgb, var(--accent) 45%, transparent); text-underline-offset:3px}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:2px}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+  .eyebrow{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); font-weight:500}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* Masthead */
+  .masthead{padding:64px 0 36px; border-bottom:3px solid var(--ink)}
+  .masthead .eyebrow{color:var(--accent-ink)}
+  .masthead h1{font-size:clamp(34px,6vw,54px); font-weight:800; letter-spacing:-.02em; line-height:1.04; margin:14px 0 18px}
+  .dek{font-size:19px; line-height:1.5; color:var(--ink-2); max-width:660px; margin:0 0 26px}
+  .byline{display:flex; flex-wrap:wrap; gap:6px 22px; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3); margin-bottom:26px}
+  .chips{display:flex; flex-wrap:wrap; gap:10px}
+  .chip{font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-weight:500; color:var(--chip-ink);
+    background:var(--bg-raised); border:1px solid var(--line); border-radius:999px; padding:7px 14px}
+  .chip b{color:var(--ink); font-weight:600}
+
+  /* Live tells strip (populated from strategy-data.json when hosted with the daily pipeline) */
+  .live{background:var(--bg-raised); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:26px 0 0}
+  .live-head{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px}
+  .live-head .eyebrow{color:var(--accent-ink)}
+  .live-head .asof{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); margin-left:auto}
+  .live-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px}
+  .lv{background:var(--bg); border:1px solid var(--line); border-radius:7px; padding:9px 11px}
+  .lv .k{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3)}
+  .lv .v{font-family:"IBM Plex Mono",monospace; font-size:15px; font-weight:600; margin-top:3px; font-variant-numeric:tabular-nums}
+  .lv .s{font-size:11.5px; color:var(--ink-2); margin-top:2px}
+  .lv.amber{border-color:var(--warn); background:var(--warn-bg)}
+  .lv.crit{border-color:var(--crit); background:var(--crit-bg)}
+  .live-tells{font-size:13px; color:var(--ink-2); margin:10px 0 0}
+  /* One-page summary + contents */
+  .summary{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:36px 0 10px}
+  .sum{background:var(--bg-raised); border:1px solid var(--line); border-radius:10px; padding:18px 20px}
+  .sum .eyebrow{margin-bottom:8px}
+  .sum p{font-size:14.5px; color:var(--ink-2); margin:0 0 8px}
+  .sum p:last-child{margin:0}
+  .sum b{color:var(--ink)}
+  .toc{display:grid; grid-template-columns:repeat(3,1fr); gap:0 24px; margin:22px 0 0; padding:0; list-style:none}
+  .toc li{font-family:"IBM Plex Mono",monospace; font-size:12.5px; padding:7px 0; border-bottom:1px solid var(--line)}
+  .toc li span{color:var(--ink-3); margin-right:10px}
+  .toc a{text-decoration:none; color:var(--ink)}
+  .toc a:hover{color:var(--accent-ink); text-decoration:underline}
+
+  /* Parts & sections */
+  .part{margin-top:64px; padding-top:18px; border-top:3px solid var(--ink); display:flex; align-items:baseline; gap:16px}
+  .part .eyebrow{color:var(--accent-ink)}
+  .part h2{font-size:15px; font-weight:700; letter-spacing:.02em; text-transform:uppercase; color:var(--ink-2)}
+  .part .span{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3)}
+  section{padding:40px 0 8px}
+  .sec-head{display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--line-strong); padding-bottom:10px; margin-bottom:22px}
+  .sec-head .n{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--accent-ink); font-weight:600}
+  .sec-head h2{font-size:24px; font-weight:700; letter-spacing:-.01em}
+  h3{font-size:16px; font-weight:700; margin:26px 0 8px}
+  p{margin:0 0 14px}
+  .small{font-size:14px; color:var(--ink-2)}
+  .footnote{font-size:13px; color:var(--ink-3); line-height:1.55}
+
+  blockquote{margin:22px 0; padding:4px 0 4px 20px; border-left:3px solid var(--accent);
+    font-size:20px; line-height:1.45; font-style:italic; color:var(--ink)}
+  blockquote .attr{display:block; margin-top:8px; font-style:normal; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3)}
+
+  .tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; margin:22px 0}
+  .tile{background:var(--bg-raised); border:1px solid var(--line); border-radius:8px; padding:16px 16px 13px}
+  .tile .v{font-family:"Schibsted Grotesk",sans-serif; font-size:26px; font-weight:800; letter-spacing:-.01em; line-height:1.1; font-variant-numeric:tabular-nums}
+  .tile .l{font-size:13px; color:var(--ink-2); margin-top:6px; line-height:1.4}
+
+  .box{background:var(--bg-raised); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin:20px 0}
+  .box h3{margin-top:0}
+  .box.warn{background:var(--warnbox-bg); border-color:var(--warnbox-line)}
+  .box.warn h3{color:var(--warnbox-ink)}
+
+  /* Allocation bar */
+  .bar-fig{margin:26px 0 8px}
+  .bar{display:flex; height:52px; border-radius:6px; overflow:hidden; background:var(--bg)}
+  .seg{position:relative; border-right:2px solid var(--bg); cursor:default; transition:filter .12s}
+  .seg:last-child{border-right:none}
+  .seg:hover{filter:brightness(1.08)}
+  .seg .pct{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-weight:600; color:#fff}
+  .seg.light-ink .pct{color:#1a1a19}
+  .legend{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:8px 18px; margin-top:16px}
+  .lg{display:flex; gap:10px; align-items:baseline; font-size:14px}
+  .lg .sw{width:11px; height:11px; border-radius:3px; flex:none; transform:translateY(1px)}
+  .lg .nm{font-weight:600; font-family:"Schibsted Grotesk",sans-serif; font-size:13.5px}
+  .lg .val{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-2); margin-left:auto; white-space:nowrap}
+  #tip{position:fixed; pointer-events:none; background:var(--ink); color:var(--bg); font-family:"IBM Plex Mono",monospace;
+    font-size:12px; padding:6px 10px; border-radius:6px; z-index:10; white-space:nowrap}
+
+  /* Tables */
+  .tbl-wrap{overflow-x:auto; margin:18px 0; border:1px solid var(--line); border-radius:10px}
+  table{border-collapse:collapse; width:100%; font-size:14px; min-width:640px}
+  th{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-3); font-weight:500; text-align:left; padding:12px 14px; border-bottom:1px solid var(--line-strong); background:var(--bg-raised)}
+  td{padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.tick{font-family:"IBM Plex Mono",monospace; font-weight:600; white-space:nowrap}
+  td.r,th.r{text-align:right; font-variant-numeric:tabular-nums}
+  td.r{font-family:"IBM Plex Mono",monospace; font-size:13px}
+  .subrow td{background:var(--bg-raised); font-family:"Schibsted Grotesk",sans-serif; font-weight:700; font-size:13px}
+  .dot{display:inline-block; width:9px; height:9px; border-radius:2.5px; margin-right:8px; transform:translateY(0.5px)}
+
+  /* Timeline */
+  .timeline{margin:24px 0; padding:0; list-style:none}
+  .timeline li{position:relative; padding:0 0 26px 34px; border-left:2px solid var(--line-strong); margin-left:8px}
+  .timeline li:last-child{border-left-color:transparent; padding-bottom:4px}
+  .timeline li::before{content:""; position:absolute; left:-7px; top:4px; width:12px; height:12px; border-radius:50%;
+    background:var(--accent); border:2.5px solid var(--bg)}
+  .timeline .when{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600; color:var(--accent-ink); letter-spacing:.06em; text-transform:uppercase}
+  .timeline .amt{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3); margin-left:10px}
+  .timeline h3{margin:4px 0 4px; font-size:15.5px}
+  .timeline p{font-size:14.5px; color:var(--ink-2); margin:0; max-width:640px}
+
+  /* Roadmap */
+  .phases{display:grid; gap:10px; margin:22px 0}
+  .phase{display:grid; grid-template-columns:130px 1fr; gap:16px; background:var(--bg-raised); border:1px solid var(--line); border-radius:10px; padding:18px 20px}
+  .phase .yr{font-family:"Schibsted Grotesk",sans-serif; font-weight:800; font-size:18px; letter-spacing:-.01em}
+  .phase .yr small{display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); margin:4px 0 8px}
+  .phase p{margin:0; font-size:14.5px; color:var(--ink-2)}
+  .phase p b{color:var(--ink)}
+
+  /* Regime dial */
+  .pill{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:3px 9px; border-radius:999px; white-space:nowrap}
+  .pill.good{background:var(--good-bg); color:var(--good)}
+  .pill.warn{background:var(--warn-bg); color:var(--warn)}
+  .pill.crit{background:var(--crit-bg); color:var(--crit)}
+  .regime td:first-child{white-space:nowrap}
+  .regime td{font-size:13.5px}
+  .modes{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; margin:20px 0}
+  .mode{background:var(--bg-raised); border:1px solid var(--line); border-radius:10px; padding:18px 20px}
+  .mode h3{margin:0 0 6px; font-size:15.5px}
+  .mode .hit{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3); margin-bottom:10px}
+  .mode p{font-size:14px; color:var(--ink-2); margin:0 0 8px}
+  .mode p:last-child{margin:0}
+
+  /* Watch list */
+  ul.flat{margin:14px 0; padding-left:0; list-style:none}
+  ul.flat li{padding:10px 0; border-bottom:1px solid var(--line); font-size:14.5px}
+  ul.flat li:last-child{border-bottom:none}
+  ul.flat b{font-family:"Schibsted Grotesk",sans-serif; font-size:14px}
+  ul.flat .src{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3); white-space:nowrap; float:right; margin-left:12px}
+  ul.flat .tag{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-ink); margin-right:8px}
+
+  .disclaimer{margin-top:56px; border-top:3px solid var(--ink); padding-top:18px}
+  @media (max-width:640px){
+    .summary{grid-template-columns:1fr}
+    .toc{grid-template-columns:1fr 1fr}
+    .phase{grid-template-columns:1fr; gap:6px}
+    .seg .pct{display:none}
+    .masthead{padding-top:44px}
+    .part{flex-wrap:wrap}
+    .part .span{margin-left:0; width:100%}
+  }
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Model portfolio &middot; Research note &middot; v3</div>
+  <h1>The Centralization Portfolio</h1>
+  <p class="dek">A five-year, $100,000 model built on Dylan Patel&rsquo;s thesis that OpenAI and Anthropic will control most of the world&rsquo;s usable compute by 2028 &mdash; how to buy in this fall, how to hold through the ramp, and the rules for rotating to cash and puts before the financing wall.</p>
+  <div class="byline">
+    <span>PREPARED&nbsp;&middot;&nbsp;AUG 30 2026</span>
+    <span>SOURCE&nbsp;&middot;&nbsp;DWARKESH PODCAST, AUG 25 2026</span>
+    <span>HORIZON&nbsp;&middot;&nbsp;SEP 2026 &ndash; SEP 2031</span>
+  </div>
+  <div class="chips">
+    <span class="chip"><b>$100k</b> capital</span>
+    <span class="chip"><b>20%</b> LEAPS cap</span>
+    <span class="chip"><b>15%</b> dry powder</span>
+    <span class="chip"><b>5%</b> spec sleeve</span>
+    <span class="chip">high risk tolerance</span>
+  </div>
+
+  <div class="live" id="live" hidden>
+    <div class="live-head">
+      <span class="eyebrow">Live tells</span>
+      <span class="pill good" id="lv-regime">&#9679; &mdash;</span>
+      <span class="asof" id="lv-asof"></span>
+    </div>
+    <div class="live-grid" id="lv-grid"></div>
+    <p class="live-tells" id="lv-list" hidden></p>
+  </div>
+
+  <div class="summary">
+    <div class="sum">
+      <div class="eyebrow">Now &middot; Buying in (Sep 2026 &ndash; Jan 2027)</div>
+      <p><b>Own the toll roads, reach the labs through their shareholders.</b> 45% compute toll roads &amp; lab proxies &middot; 10% power &middot; 20% LEAPS cap &middot; 5% spec &middot; 5% gold &middot; 15% dry powder.</p>
+      <p><b>Six tranches, no lump sums.</b> Half the equity book in early September, a quarter after the Sep 16 FOMC, LEAPS tranche 1 in October, the final quarter plus spec after the Nov 3 midterms, LEAPS tranche 2 into year-end.</p>
+      <p><b>Powder buys panic, not thesis failure.</b> $5k each at &minus;15 / &minus;25 / &minus;35% on QQQ &mdash; only while the regime is Green or Amber.</p>
+    </div>
+    <div class="sum">
+      <div class="eyebrow">Then &middot; Rotating out (2027 &ndash; 2031)</div>
+      <p><b>The switch is a dial, not a date.</b> <span class="pill warn">&#9650; Amber</span> on any two <em>leading</em> tells (AI credit spreads, rates, compute pricing rolling over): leverage off, LEAPS &le;10%, powder 20&ndash;25%, start the put overlay while vol is cheap.</p>
+      <p><span class="pill crit">&#9632; Red</span> on any one <em>confirming</em> tell (capex guide cut, a lab exercising a 90-day out, a default, a moratorium): LEAPS to zero, core to ~25%, powder 40&ndash;50%, puts if vol allows.</p>
+      <p><b>Calendar backstop, whatever the tells say:</b> by mid-2028 LEAPS &le;10% and powder &ge;20%; by Jan 2029 LEAPS &le;5% and powder &ge;25%.</p>
+    </div>
+  </div>
+  <ul class="toc">
+    <li><span>01</span><a href="#thesis">The thesis</a></li>
+    <li><span>02</span><a href="#macro">Macro overlay</a></li>
+    <li><span>03</span><a href="#allocation">The allocation</a></li>
+    <li><span>04</span><a href="#deploy">Deployment schedule</a></li>
+    <li><span>05</span><a href="#leaps">LEAPS playbook</a></li>
+    <li><span>06</span><a href="#powder">Dry powder rules</a></li>
+    <li><span>07</span><a href="#roadmap">Roadmap &amp; IPO protocol</a></li>
+    <li><span>08</span><a href="#regime">The regime dial</a></li>
+    <li><span>09</span><a href="#watch">The dashboard</a></li>
+  </ul>
+</header>
+
+<!-- ===================== PART I ===================== -->
+<div class="part"><span class="eyebrow">Part I</span><h2>Why &mdash; the thesis and the backdrop</h2><span class="span">What the episode claims, and what the market is doing now</span></div>
+
+<section id="thesis">
+  <div class="sec-head"><span class="n">01</span><h2>The thesis, in the episode&rsquo;s own numbers</h2></div>
+  <div class="prose">
+    <blockquote>&ldquo;Every force is screeching towards centralization.&rdquo;<span class="attr">&mdash; Dylan Patel, Dwarkesh Podcast, Aug 25 2026</span></blockquote>
+    <p>Patel&rsquo;s argument: OpenAI and Anthropic each ended up at 5+&nbsp;GW of compute in 2026 (from ~2&nbsp;GW), already absorbing roughly 30% of the world&rsquo;s <em>incremental</em> compute. Because a frontier lab earns on the order of <b>$50M per megawatt</b> against a $10&ndash;15M baseline cost, the labs can outbid everyone for scarce capacity &mdash; so their share of new compute compounds: 40&ndash;50% in 2027, and by end-2028 a majority of the world&rsquo;s <em>usable</em> FLOPs (50&ndash;100&nbsp;GW combined against a ~200&nbsp;GW world, with each new chip generation 3&ndash;5&times; more efficient than the installed base).</p>
+    <p>Five forces drive the concentration: training economies of scale, shortage pricing power, recursive self-improvement, deployment-data advantage, and the labs&rsquo; option to redirect inference capacity to internal R&amp;D whenever that&rsquo;s worth more than selling it.</p>
+  </div>
+  <div class="tiles">
+    <div class="tile"><div class="v">~$11T</div><div class="l">Total AI capex 2024&ndash;29: ~$6T from cash flows, $5T+ from debt</div></div>
+    <div class="tile"><div class="v">$1&rarr;2&rarr;3&ndash;4T</div><div class="l">Annual capex trajectory &rsquo;26 &rarr; &rsquo;27 &rarr; &rsquo;28</div></div>
+    <div class="tile"><div class="v">50%+</div><div class="l">Share of incremental compute going to the two labs by end-2027</div></div>
+    <div class="tile"><div class="v">8%+</div><div class="l">Hyperscaler borrowing cost he projects by 2028&ndash;29 (5&ndash;6% today), +200&ndash;250&nbsp;bps economy-wide</div></div>
+  </div>
+  <div class="box">
+    <h3>The investable read</h3>
+    <p class="small" style="margin-bottom:8px"><b>Own the toll roads with pricing power.</b> The episode&rsquo;s clearest winners are the scarce inputs raising prices fastest: memory/HBM (&ldquo;faster than TSMC&rdquo;), Nvidia (now also designing custom chips for OpenAI), Broadcom and substrates, EUV lithography (ASML/Zeiss as the chokepoint), and power equipment (turbines so scarce there&rsquo;s resale arbitrage).</p>
+    <p class="small" style="margin-bottom:8px"><b>Reach the private labs through their shareholders.</b> OpenAI and Anthropic aren&rsquo;t listed yet; Microsoft, Google, and Amazon hold the equity claims and supply their compute. When they do list, the rules are in &sect;07.</p>
+    <p class="small" style="margin-bottom:8px"><b>Respect the debt.</b> $5T+ of leverage and rising rates is the thesis&rsquo;s own tail risk &mdash; prefer cash-flow-funded builders, keep duration short, and hedge the crowding-out scenario (his losers: long-duration dividend stocks and small inference resellers).</p>
+    <p class="small" style="margin:0"><b>Expect structurally higher rates.</b> If capex crowds out capital as he projects, &ldquo;wait for cuts&rdquo; is the wrong stance &mdash; the portfolio must work in a rising-rate regime, and must know when that regime turns from tailwind to wall (&sect;08).</p>
+  </div>
+</section>
+
+<section id="macro">
+  <div class="sec-head"><span class="n">02</span><h2>Macro overlay &mdash; the timing inputs</h2></div>
+  <div class="prose">
+    <p><b>The hike is real, and mostly priced.</b> Fed funds sits at 3.50&ndash;3.75%; futures put ~65% odds on a 25&nbsp;bp hike at the <span class="mono num">Sep 15&ndash;16</span> FOMC, driven by the energy shock (Strait of Hormuz) and a credibility-restoring impulse after July&rsquo;s hold. J.P. Morgan strategists frame it as a standalone move, not a tightening cycle. Design response: stage entries around the meeting, keep the LEAPS deep in-the-money (less extrinsic value exposed to multiple compression), and let the dry powder earn ~4% while it waits. Patel&rsquo;s crowding-out projection points the same direction &mdash; higher rates are thesis-consistent, not a temporary storm. A 25&nbsp;bp credibility move is step one of his sequence, not the 8% world.</p>
+    <p><b>September is the market&rsquo;s weakest month</b> on average since 1950. That&rsquo;s a noisy, low-magnitude signal &mdash; but it costs nothing to respect, because staging into a hike month is prudent anyway. No tranche is a lump sum.</p>
+    <p><b>Midterms are Nov 3.</b> The S&amp;P 500 has been higher in the twelve months following every midterm election since 1946. A tendency, not a law &mdash; the plan simply schedules its final equity tranche and second LEAPS tranche into the post-election window rather than fighting it.</p>
+    <p class="small"><b>The tape right now:</b> Nvidia&rsquo;s Aug 26 print and strong guidance re-lit the AI trade into month-end, days after a chip selloff on rattled bond yields &mdash; and Fed officials are still talking up inflation risk. Expect exactly this regime: violent rotations inside a structural uptrend. The structure below is built to buy those dislocations rather than fear them.</p>
+  </div>
+</section>
+
+<!-- ===================== PART II ===================== -->
+<div class="part"><span class="eyebrow">Part II</span><h2>Buying in &mdash; September 2026 to January 2027</h2><span class="span">What to own, in what order, with what rules</span></div>
+
+<section id="allocation">
+  <div class="sec-head"><span class="n">03</span><h2>The $100k allocation</h2></div>
+
+  <figure class="bar-fig" aria-label="Portfolio allocation: Core toll roads 45%, LEAPS 20%, Dry powder 15%, Power 10%, Speculative 5%, Gold 5%">
+    <div class="bar" role="img">
+      <div class="seg" style="width:45%;background:var(--s1)" data-n="Core toll roads &amp; lab proxies" data-v="$45,000 · 45%"><span class="pct">45%</span></div>
+      <div class="seg" style="width:20%;background:var(--s2)" data-n="LEAPS (cap)" data-v="$20,000 · 20%"><span class="pct">20%</span></div>
+      <div class="seg" style="width:15%;background:var(--s3)" data-n="Dry powder" data-v="$15,000 · 15%"><span class="pct">15%</span></div>
+      <div class="seg light-ink" style="width:10%;background:var(--s4)" data-n="Power &amp; electrification" data-v="$10,000 · 10%"><span class="pct">10%</span></div>
+      <div class="seg light-ink" style="width:5%;background:var(--s5)" data-n="Speculative" data-v="$5,000 · 5%"></div>
+      <div class="seg" style="width:5%;background:var(--s6)" data-n="Gold tail hedge" data-v="$5,000 · 5%"></div>
+    </div>
+    <div class="legend">
+      <div class="lg"><span class="sw" style="background:var(--s1)"></span><span class="nm">Core toll roads &amp; lab proxies</span><span class="val num">$45,000 · 45%</span></div>
+      <div class="lg"><span class="sw" style="background:var(--s2)"></span><span class="nm">LEAPS (at full deployment)</span><span class="val num">$20,000 · 20%</span></div>
+      <div class="lg"><span class="sw" style="background:var(--s3)"></span><span class="nm">Dry powder (SGOV)</span><span class="val num">$15,000 · 15%</span></div>
+      <div class="lg"><span class="sw" style="background:var(--s4)"></span><span class="nm">Power &amp; electrification</span><span class="val num">$10,000 · 10%</span></div>
+      <div class="lg"><span class="sw" style="background:var(--s5)"></span><span class="nm">Speculative</span><span class="val num">$5,000 · 5%</span></div>
+      <div class="lg"><span class="sw" style="background:var(--s6)"></span><span class="nm">Gold tail hedge</span><span class="val num">$5,000 · 5%</span></div>
+    </div>
+  </figure>
+
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Position</th><th class="r">Weight</th><th class="r">$</th><th>Why it&rsquo;s here (episode evidence)</th></tr></thead>
+    <tbody>
+      <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s1)"></span>CORE &mdash; COMPUTE TOLL ROADS &amp; LAB PROXIES &middot; 45%</td></tr>
+      <tr><td class="tick">NVDA</td><td class="r">9%</td><td class="r">9,000</td><td>Dominant accelerator with pricing power into the shortage; now designing custom silicon for OpenAI itself.</td></tr>
+      <tr><td class="tick">AVGO</td><td class="r">6%</td><td class="r">6,000</td><td>Custom ASICs + networking for the labs&rsquo; in-house chips; named among suppliers &ldquo;raising prices rapidly.&rdquo;</td></tr>
+      <tr><td class="tick">MU</td><td class="r">6%</td><td class="r">6,000</td><td>Memory is the episode&rsquo;s clearest value-capture winner &mdash; HBM demand &ldquo;insatiable,&rdquo; prices rising faster than TSMC&rsquo;s. Also the most cyclical name here: first to trim in Amber.</td></tr>
+      <tr><td class="tick">ASML</td><td class="r">4%</td><td class="r">4,000</td><td>EUV bottleneck; must reach ~100 tools/yr by 2030. Monopoly on the tool everything upstream depends on.</td></tr>
+      <tr><td class="tick">TSM</td><td class="r">4%</td><td class="r">4,000</td><td>The foundry, but Patel notes it captures &ldquo;way less value&rdquo; than memory &mdash; hence the smallest chip weight; ballast, not torque.</td></tr>
+      <tr><td class="tick">GOOGL</td><td class="r">6%</td><td class="r">6,000</td><td>Anthropic stake + TPUv7 vertical integration + the strongest balance sheet among builders &mdash; least exposed to the debt spiral. A keeper in Red.</td></tr>
+      <tr><td class="tick">MSFT</td><td class="r">5%</td><td class="r">5,000</td><td>The largest public claim on OpenAI equity and its compute economics. A keeper in Red.</td></tr>
+      <tr><td class="tick">AMZN</td><td class="r">5%</td><td class="r">5,000</td><td>Anthropic stake + Trainium3 supplier to the lab Patel says earns $50M/MW. A keeper in Red.</td></tr>
+      <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s4)"></span>POWER &amp; ELECTRIFICATION &middot; 10%</td></tr>
+      <tr><td class="tick">GEV</td><td class="r">3%</td><td class="r">3,000</td><td>Turbines are the scarcity he cites directly &mdash; resale arbitrage on power equipment already happening.</td></tr>
+      <tr><td class="tick">VRT</td><td class="r">3%</td><td class="r">3,000</td><td>Datacenter electrical backbone &amp; cooling; sells into every GW added, whoever wins.</td></tr>
+      <tr><td class="tick">CEG</td><td class="r">2%</td><td class="r">2,000</td><td>Largest US nuclear fleet; firm clean power is what hyperscalers sign PPAs for.</td></tr>
+      <tr><td class="tick">CCJ</td><td class="r">2%</td><td class="r">2,000</td><td>Uranium leverage to the same buildout, one step removed.</td></tr>
+      <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s2)"></span>LEAPS &middot; 20% CAP &mdash; rules in &sect;05</td></tr>
+      <tr><td class="tick">Tranche 1</td><td class="r">10%</td><td class="r">10,000</td><td>NVDA 4% / MU 3% / AVGO 3% &mdash; Jan 2029, 0.65&ndash;0.75&Delta;, opened in the October window.</td></tr>
+      <tr><td class="tick">Tranche 2</td><td class="r">10%</td><td class="r">10,000</td><td>GOOGL 4% + 6% discretionary &mdash; opened post-midterm or on a &minus;12% QQQ drawdown, whichever comes first.</td></tr>
+      <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s5)"></span>SPECULATIVE &middot; 5%</td></tr>
+      <tr><td class="tick">SPCX</td><td class="r">2%</td><td class="r">2,000</td><td>The episode&rsquo;s case study made public: rents Colossus capacity to the labs at the ~$50M/MW premium &mdash; Anthropic $1.25B/mo, Google $920M/mo (&gt;$76B through 2029). A ~$1.9T cap and 90-day contract outs keep it spec-sized.</td></tr>
+      <tr><td class="tick">CRWV</td><td class="r">1.5%</td><td class="r">1,500</td><td>Same landlord model, levered version &mdash; build compute, rent to the labs at a premium. The debt is the thesis&rsquo;s own risk, hence the size.</td></tr>
+      <tr><td class="tick">OKLO</td><td class="r">1.5%</td><td class="r">1,500</td><td>SMR optionality on the power bottleneck &mdash; lottery-ticket sizing, priced for it.</td></tr>
+      <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s6)"></span>GOLD TAIL HEDGE &middot; 5%</td></tr>
+      <tr><td class="tick">GLDM</td><td class="r">5%</td><td class="r">5,000</td><td>Hedges the fiscal-stress / default branch of the episode&rsquo;s tail and a Fed-cuts-into-bust scenario. Not a hedge for a real-rate spike (gold fell when Volcker actually did it) &mdash; the bills cover that branch.</td></tr>
+      <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s3)"></span>DRY POWDER &middot; 15%</td></tr>
+      <tr><td class="tick">SGOV</td><td class="r">15%</td><td class="r">15,000</td><td>0&ndash;3&nbsp;month T-bills, ~4% after a hike. Paid to wait; deployed only by the rules in &sect;06.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="footnote">Deliberate omissions: Oracle and Meta (the most debt-and-buildout-levered builders &mdash; the episode flags exactly that leverage), long-duration bond proxies (his stated losers as rates rise), and small inference resellers (undercut when labs pull compute in-house). Hyperscaler weights are moderated on purpose: Patel is explicit that builders&rsquo; margins compress even as they win.</p>
+</section>
+
+<section id="deploy">
+  <div class="sec-head"><span class="n">04</span><h2>Deployment schedule &mdash; September through January</h2></div>
+  <div class="prose"><p>Nothing goes in as a lump sum. The schedule leans into all three timing inputs: staged through weak September, a tranche straddling the FOMC, and the final equity buys landing in the post-midterm window. Dates are windows, not precision &mdash; use limit orders into red days.</p></div>
+  <ul class="timeline">
+    <li><span class="when">Sep 1&ndash;5</span><span class="amt num">$32,500</span><h3>Open half the equity book</h3><p>Half of core + power ($27.5k) and the full gold hedge ($5k). Everything else parks in SGOV from day one.</p></li>
+    <li><span class="when">Sep 16&ndash;18 &middot; post-FOMC</span><span class="amt num">$13,750</span><h3>Quarter of the equity book through the hike</h3><p>Decision lands 2pm ET Sep 16. Buy the reaction either way &mdash; a 25 bp hike is ~65% priced; the tranche exists so the meeting is an entry, not a guess.</p></li>
+    <li><span class="when">Oct 1&ndash;15</span><span class="amt num">$10,000</span><h3>LEAPS tranche 1</h3><p>NVDA / MU / AVGO, Jan 2029, 0.65&ndash;0.75&Delta; &mdash; September seasonality behind, new long expiries listed.</p></li>
+    <li><span class="when">Nov 4&ndash;14 &middot; post-midterm</span><span class="amt num">$18,750</span><h3>Final equity quarter + spec sleeve</h3><p>Completes core and power at full weights; opens SPCX / CRWV / OKLO. The historically strongest 12-month window starts here.</p></li>
+    <li><span class="when">Nov 4 &ndash; Dec 15 (or &minus;12% QQQ)</span><span class="amt num">$10,000</span><h3>LEAPS tranche 2</h3><p>GOOGL + discretionary adds. If the market hands over a &minus;12% drawdown before the window, take it early.</p></li>
+    <li><span class="when">Standing</span><span class="amt num">$15,000</span><h3>Dry powder holds</h3><p>SGOV, governed solely by the &sect;06 trigger ladder. Fully deployed portfolio: 45 / 20 / 15 / 10 / 5 / 5.</p></li>
+  </ul>
+</section>
+
+<section id="leaps">
+  <div class="sec-head"><span class="n">05</span><h2>LEAPS playbook &mdash; 20% cap, deployed in halves</h2></div>
+  <div class="prose">
+    <p>LEAPS are the leverage on the thesis, so they get the strictest rules in the book. Deep in-the-money on purpose: in a hike-risk regime you want to pay for intrinsic value, not implied volatility. They are also the first thing to come off when the regime turns (&sect;08).</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Rule</th><th>Setting</th></tr></thead>
+    <tbody>
+      <tr><td class="tick">Structure</td><td>Calls only, 0.65&ndash;0.75 delta, 18&ndash;30 months out &mdash; Jan 2029 series as they list this fall.</td></tr>
+      <tr><td class="tick">Tranche 1 &mdash; 10%</td><td>Oct 1&ndash;15 window (September behind, fresh 2029 expiries): NVDA $4k &middot; MU $3k &middot; AVGO $3k.</td></tr>
+      <tr><td class="tick">Tranche 2 &mdash; 10%</td><td>Nov 4 &ndash; Dec 15 post-midterm window, or a &minus;12% QQQ drawdown &mdash; whichever comes first: GOOGL $4k + $6k added to whichever thesis is tracking best (memory pricing vs. accelerator demand).</td></tr>
+      <tr><td class="tick">Roll</td><td>At ~12 months to expiry, roll out to the next January &mdash; never ride into the theta cliff. In an IRA the roll has no tax friction. <b>In Amber, stop rolling</b>: convert gains to shares or cash instead.</td></tr>
+      <tr><td class="tick">Take profits</td><td>At +100% on a contract, sell half &mdash; the position rides on house money.</td></tr>
+      <tr><td class="tick">Cap enforcement</td><td>Quarterly: if the sleeve&rsquo;s market value exceeds 20% of portfolio, trim the excess into core equity or SGOV. The cap is a discipline, not a suggestion &mdash; and it steps down by calendar: &le;10% by mid-2028, &le;5% by Jan 2029.</td></tr>
+      <tr><td class="tick">Concentration</td><td>Max 8% of portfolio in any single underlying&rsquo;s premium.</td></tr>
+      <tr><td class="tick">Losers</td><td>Never average down a losing LEAP. If the thesis holds, roll out for time; if it doesn&rsquo;t, take the loss. Size every contract to survive a zero.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="powder">
+  <div class="sec-head"><span class="n">06</span><h2>Dry powder &mdash; rules, not vibes</h2></div>
+  <div class="prose">
+    <p>$15,000 in SGOV, earning ~4% while it waits. It exists to buy panic &mdash; but only panic that leaves the thesis intact. Triggers are measured on QQQ from its all-time high, and each deployment uses limit orders into red days, not market orders into green ones.</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Trigger (QQQ)</th><th class="r">Deploy</th><th>Into</th></tr></thead>
+    <tbody>
+      <tr><td class="tick">&minus;15%</td><td class="r">$5,000</td><td>Core adds at limit prices &mdash; the names above, same weights.</td></tr>
+      <tr><td class="tick">&minus;25%</td><td class="r">$5,000</td><td>Half core, half one deep-ITM LEAP (IV will be rich &mdash; go deeper ITM than usual, 0.80&Delta;).</td></tr>
+      <tr><td class="tick">&minus;35%</td><td class="r">$5,000</td><td>Highest-conviction names only. This is the 2022-style capitulation bid.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="prose">
+    <p class="small"><b>Replenish:</b> after any deployment, rebuild powder to at least 10% within two quarters via trims and the annual rebalance. <b>Melt-up valve:</b> if no &minus;15% drawdown occurs by Dec 2027, move $5k into core and hold a $10k floor &mdash; dry powder is insurance, not a market call.</p>
+  </div>
+  <div class="box warn">
+    <h3>The ladder only runs in Green or Amber</h3>
+    <p class="small" style="margin:0">A drawdown with the thesis intact is a sale price. A drawdown <em>because the thesis broke</em> is a warning. If any Red trigger in &sect;08 has fired &mdash; a capex guide cut, a lab exercising a 90-day out, a financing-driven cancellation or default, a training pause &mdash; the ladder is suspended and the powder grows instead of deploying. Ask which crash mode you are in before you buy anything.</p>
+  </div>
+</section>
+
+<!-- ===================== PART III ===================== -->
+<div class="part"><span class="eyebrow">Part III</span><h2>Holding and rotating &mdash; 2027 to 2031</h2><span class="span">The clock, the exits, and what to watch</span></div>
+
+<section id="roadmap">
+  <div class="sec-head"><span class="n">07</span><h2>The five-year clock</h2></div>
+  <div class="prose"><p>Each phase carries the episode&rsquo;s own checkpoints and the regime the plan expects to be in. The regime is set by the tells in &sect;08, not by the calendar &mdash; but the calendar sets a floor on how much risk is allowed as the financing wall approaches.</p></div>
+  <div class="phases">
+    <div class="phase"><div class="yr">2026 <small>H2 &middot; Build</small><span class="pill good">&#9679; Green</span></div><p>Execute the deployment schedule. ~$1T capex; labs at 5+ GW each; buybacks suspended; the first credibility hike. Financing strain is visible but not binding. By New Year the book is fully constructed.</p></div>
+    <div class="phase"><div class="yr">2027 <small>Verify</small><span class="pill good">&#9679; Green</span></div><p>Patel&rsquo;s checkpoints come due: labs taking <b>40&ndash;50% of incremental compute</b>, ~$2T capex, pricing at $50&ndash;80M/MW. Debt issuance ramps hard &mdash; the year he says rates &ldquo;go up in the market,&rdquo; so expect the first Amber tells here. Both lab IPOs likely priced, a late-cycle marker historically. Hold winners; enforce the LEAPS cap quarterly.</p></div>
+    <div class="phase"><div class="yr">2028 <small>The claim</small><span class="pill warn">&#9650; Amber</span></div><p>The title thesis is falsifiable: the two labs holding <b>most of the world&rsquo;s usable compute</b> (50&ndash;100 GW of ~200 GW). $3&ndash;4T capex; hyperscaler paper at 8%+. Financing either works or breaks. <b>Amber by calendar regardless of tells</b>: LEAPS &le;10%, powder &ge;20% by June. If either lab is public, its own filings replace third-party estimates as the thesis gauge.</p></div>
+    <div class="phase"><div class="yr">2029&ndash;30 <small>Harvest</small><span class="pill warn">&#9650; Amber</span> <span class="pill crit">&#9632; Red</span></div><p>Dwarkesh&rsquo;s &ldquo;second Volcker shock&rdquo; window: sovereign defaults, non-AI equities crater, banks squeezed &mdash; &ldquo;very likely by the 2030s.&rdquo; LEAPS &le;5% from Jan 2029 (the Jan 2029 expiries simply aren&rsquo;t all rolled); powder &ge;25%. Convert LEAP gains to shares; watch the cycle-top canaries &mdash; GPU depreciation write-downs, falling rental rates, neocloud defaults.</p></div>
+    <div class="phase"><div class="yr">2031 <small>Resolve</small></div><p>Horizon end. Either compute became the world&rsquo;s scarcest industrial input and the toll roads repriced accordingly &mdash; or the $11T overbuilt, and the book survived via the cap discipline, the dial, the hedge, and the powder. Both outcomes leave capital to redeploy.</p></div>
+  </div>
+
+  <div class="box">
+    <h3>If the labs list &mdash; the IPO protocol</h3>
+    <p class="small" style="margin-bottom:8px">This may come sooner than the 2028 checkpoint: Anthropic reportedly filed a confidential S-1 on June 1, 2026, with an October window and ~$2T ambitions discussed (unconfirmed), and OpenAI&rsquo;s CFO has told staff it &ldquo;will be a public company in 2027&rdquo; or sooner, with $1T+ figures reported. The rules are pre-committed now, before the excitement:</p>
+    <p class="small" style="margin-bottom:6px"><b>1 &middot; Fund by rotation, not addition.</b> The proxies&rsquo; scarcity premium &mdash; &ldquo;the only way to own the labs&rdquo; &mdash; expires the day a direct claim trades. Anthropic listing &rarr; build the position by trimming GOOGL/AMZN; OpenAI listing &rarr; trim MSFT. Total thesis exposure stays flat; expect the proxies themselves to reprice both ways around the event (stakes marked up, premium gone).</p>
+    <p class="small" style="margin-bottom:6px"><b>2 &middot; Never buy the day-one pop.</b> SPCX broke its own $135 debut price within two weeks. Starter position &le;2% only after the first week&rsquo;s range sets; add at &minus;20% from the day-one close, at lockup expiry (~6 months), or after the first public earnings guide &mdash; whichever discounts first.</p>
+    <p class="small" style="margin-bottom:6px"><b>3 &middot; Caps.</b> Combined direct-lab equity &le;10% at cost. The $5k dry-powder swing is reserved for a broken deal &mdash; pricing below issue into a weak tape &mdash; not for chasing strength.</p>
+    <p class="small" style="margin-bottom:6px"><b>4 &middot; No LEAPS on a fresh listing for 12 months.</b> Rich IV, thin chains, and lockup overhang make fresh-IPO options structurally bad value; revisit after two earnings prints.</p>
+    <p class="small" style="margin:0"><b>5 &middot; Yardstick.</b> At the reported ~$2T on a ~$65B run-rate (~30x forward), the centralization premium is fully priced at the window. If the thesis is right, there will be years to compound &mdash; the derate is the entry, not the pop.</p>
+  </div>
+</section>
+
+<section id="regime">
+  <div class="sec-head"><span class="n">08</span><h2>The regime dial &mdash; when calls and shares become cash and puts</h2></div>
+  <div class="prose">
+    <p>There is no date. Patel&rsquo;s own clock puts the financing wall in 2028&ndash;29, with 2027 as the ramp &mdash; but equity tops tend to lead credit events by six to twelve months, and can arrive years early or late. So the switch is a dial with pre-committed triggers, turned in stages. Leverage comes off on <em>leading</em> signals (credit, compute pricing); shares come off on <em>confirming</em> signals (capex cuts); insurance is bought while it is cheap, not after the fire starts.</p>
+  </div>
+
+  <h3>The two ways it crashes</h3>
+  <div class="modes">
+    <div class="mode">
+      <h3>Mode A &middot; The Volcker shock &mdash; thesis right, financing breaks</h3>
+      <div class="hit">EST. PORTFOLIO HIT &asymp; &minus;40% &middot; RECOVERY: YEARS, NOT A DECADE</div>
+      <p>$5T+ of AI debt drags everyone&rsquo;s borrowing cost up 200&ndash;250 bps. Discount rates go from 3&ndash;5% to 8&ndash;10%; long-duration cash-flow stocks crater; banks&rsquo; liabilities reprice faster than assets; thin-tax-base sovereigns default. &ldquo;Equity markets get pummeled &mdash; even AI companies.&rdquo;</p>
+      <p>Earnings keep coming, multiples halve: core &minus;35&ndash;45%, memory &minus;50%, LEAPS &minus;80&ndash;100%, bills up, gold unreliable. <b>The powder ladder is built for this one</b> &mdash; buying at &minus;25/&minus;35% is right because the revenue is real.</p>
+    </div>
+    <div class="mode">
+      <h3>Mode B &middot; The stall &mdash; thesis breaks</h3>
+      <div class="hit">EST. PORTFOLIO HIT &asymp; &minus;50&ndash;55% &middot; RECOVERY: 2001-STYLE, A DECADE+</div>
+      <p>Regulation (NY bans, TX moratoria, training pauses, models withheld), a capability plateau, or commoditization by open models ends the labs&rsquo; 3&ndash;5&times; pricing power. Labs stop outbidding &rarr; compute prices fall &rarr; 90-day outs get exercised &rarr; debt-funded builders face refinancing against stranded 30-year power and 4-year GPUs &rarr; capex guides cut &rarr; orders collapse at NVDA/MU/AVGO &rarr; write-downs.</p>
+      <p>Core &minus;55&ndash;65%, LEAPS &minus;100%, spec &minus;90%; gold and bills work as the Fed cuts into the bust. <b>Do not buy these dips.</b> The ladder is suspended.</p>
+    </div>
+  </div>
+  <div class="prose"><p class="small">The realistic path is A causing B: rates rise, AI credit spreads widen, the marginal builders get squeezed, then one incident &mdash; a lab exercising an out, a neocloud default, a depreciation-life reversal &mdash; flips sentiment and the guides get cut. That is why the tells are ordered credit first, benchmarks last.</p></div>
+
+  <div class="box warn">
+    <h3>The repression break &mdash; the third road to Red</h3>
+    <p class="small" style="margin-bottom:8px">The base case (~modal odds) is that the government runs <em>financial repression</em>: fund the debt at the front end in bills, pin short rates at or near inflation (the real policy rate is ~0 today: funds 3.50&ndash;3.75% vs. core PCE 3.7%), tolerate 3&ndash;4% inflation, and let nominal growth melt the debt. That regime shields the Treasury &mdash; not this portfolio&rsquo;s discount rates, and not the levered AI borrowers &mdash; but it is equity-friendly and gold-friendly, and it is what the zero real rate already reveals. The low-probability branch (~10%) that must be watched is the scheme <b>breaking</b>: inflation escaping the politically survivable zone and forcing the Fed into genuinely positive real rates &mdash; the one world where the sovereign&rsquo;s plan and the leveraged AI buildout hurt at the same time. It can go straight to Red without passing through Amber.</p>
+    <p class="small" style="margin-bottom:6px"><b>1 &middot; Drift.</b> Inflation grinds from ~3.5% toward 4%+ &mdash; energy shocks, AI datacenter power demand feeding electricity prices, tariffs. The Fed answers with token 25 bp moves; the real policy rate stays &le;0. Repression still on.</p>
+    <p class="small" style="margin-bottom:6px"><b>2 &middot; The market smells it.</b> Term premium breaks out; the curve bear-steepens (long yields rising while the front end sits still); the dollar weakens; gold rips. Bill auctions still clear &mdash; the captive bid holds &mdash; but the long end demands ever more.</p>
+    <p class="small" style="margin-bottom:6px"><b>3 &middot; The line breaks.</b> Core CPI/PCE pushes through ~4.5% (leading tell) toward 5% &mdash; the level that history says is politically intolerable. Wage demands and inflation expectations (5y5y breakevens) unanchor.</p>
+    <p class="small" style="margin-bottom:6px"><b>4 &middot; The forced hand.</b> The Fed abandons the token-hike game and goes for genuinely positive real rates &mdash; funds 1.5&ndash;2%+ <em>above</em> core inflation. Not this September&rsquo;s 25 bp; a Volcker-style sequence measured in hundreds of basis points.</p>
+    <p class="small" style="margin:0"><b>5 &middot; The collision.</b> Real rates at +2%+ hit the $5T AI debt stack, the 30x multiples, and the Treasury&rsquo;s own rollover machine simultaneously &mdash; Mode A at full force, likely triggering Mode B&rsquo;s credit events. This is the branch where gold and bills are the only sleeves standing, and where being early to Red is worth far more than being right about the top.</p>
+  </div>
+
+  <h3>The dial</h3>
+  <div class="tbl-wrap"><table class="regime">
+    <thead><tr><th>Regime</th><th>Trigger rule</th><th>LEAPS</th><th>Shares</th><th>Powder</th><th>Puts</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pill good">&#9679; Green</span></td><td>Default state. No amber tells, or only one.</td><td>Up to 20%; roll at 12 months</td><td>Full weights; ladder active</td><td>15%</td><td>None</td></tr>
+      <tr><td><span class="pill warn">&#9650; Amber</span></td><td><b>Any two</b> leading tells: AI-paper credit spreads +100 bps from tights, or a hyperscaler deal pricing &ge;7%; 10-year through ~5.5% or a term-premium breakout; GPU rental rates or revenue/MW rolling over; capex growth rate halving while still positive; core PCE trending through ~4.5% or 5y5y breakevens unanchoring; QQQ below its 200-day with SMH breaking a 12-month uptrend (tiebreaker only).</td><td>Stop rolling into new time; convert gains to shares/cash at 12 months out; sleeve &le;10%</td><td>Trim the most cyclical first (MU, SPCX, CRWV); core intact; ladder still active</td><td>Lift to 20&ndash;25%</td><td>Start the overlay: ~1%/yr, 12-month QQQ puts ~20% OTM</td></tr>
+      <tr><td><span class="pill crit">&#9632; Red</span></td><td><b>Any one</b> confirming tell: a top-4 hyperscaler capex guide <em>cut</em>; a lab exercises a 90-day out or renegotiates rent down toward $25M/MW; a neocloud default or datacenter cancelled for financing reasons; hyperscaler paper &gt;8% with cancellations; a federal training pause or broad datacenter moratorium; a depreciation-life reversal or major GPU write-down; <b>the repression break</b> &mdash; core inflation through ~5% with the Fed forced to genuinely positive real rates (funds &ge; core PCE +1.5%).</td><td>Zero. Sell first &mdash; they decay to nothing anyway</td><td>Core to ~25%: keep the cash-rich (GOOGL, MSFT, AMZN); exit spec entirely; ladder suspended</td><td>40&ndash;50%</td><td>2&ndash;3% premium in 6&ndash;12-month QQQ/SMH puts 10&ndash;15% OTM &mdash; only if vol hasn&rsquo;t already blown out; otherwise cash is the hedge</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box">
+    <h3>Calendar backstop, insurance timing, re-entry</h3>
+    <p class="small" style="margin-bottom:8px"><b>De-risk into the danger zone whether or not the tells fire.</b> Signals can fail, and Patel&rsquo;s own numbers put the stress in 2028&ndash;29, so the glide path forfeits some late-cycle upside to guarantee survival: <span class="mono">by Jun 2028</span> LEAPS &le;10% and powder &ge;20%; <span class="mono">by Jan 2029</span> LEAPS &le;5% and powder &ge;25%; <span class="mono">by 2030</span> no LEAPS unless the regime is unambiguously green. Giving back half of a doubled book is worse than missing the last 20%.</p>
+    <p class="small" style="margin-bottom:8px"><b>Insurance timing runs opposite to instinct.</b> Puts cost 3&ndash;5&times; more once volatility spikes. The overlay starts in Amber while the tape is calm, financed by trimming winners, sized so a melt-up costs ~1%/yr. In Red, add only if implied vol is still reasonable.</p>
+    <p class="small" style="margin:0"><b>Re-entry.</b> Back to Green when capex guides re-accelerate, AI credit spreads retrace half their widening, and revenue/MW stabilizes &mdash; or on price alone if SMH is down 50%+ from its high and the first two of those are turning. Never all at once: the ladder in reverse.</p>
+  </div>
+
+  <div class="box">
+    <h3>Known limits of this book</h3>
+    <p class="small" style="margin-bottom:6px"><b>It is a single-thesis book.</b> In a bust, every sleeve except gold and bills falls together &mdash; diversification here is across the supply chain, not across theses. Sized for someone who can watch a 40% drawdown without selling the bottom.</p>
+    <p class="small" style="margin-bottom:6px"><b>The LEAPS can go to zero.</b> A designed-in, survivable &minus;20%. The cap, the delta floor, the calendar step-down, and the no-averaging-down rule exist so leverage never becomes the reason the portfolio dies. Nothing hedges them except selling them &mdash; which is why they exit first.</p>
+    <p class="small" style="margin-bottom:6px"><b>Forecast risk.</b> These are one analyst&rsquo;s projections, with famously aggressive timelines. The labs are private &mdash; public proxies capture only a slice of the upside if he&rsquo;s right, and the market may already price much of it.</p>
+    <p class="small" style="margin:0"><b>Seasonality is seasoning.</b> September weakness and post-midterm strength are small-sample tendencies used only to schedule entries that were being staged anyway.</p>
+  </div>
+  <p class="footnote">Three wrong answers this dial exists to prevent: selling on the September hike (a 25 bp credibility move is step one of the sequence, not the 8% world); waiting for the obvious top (by the time capex is cut, the stocks are already down 40%, which is why leverage exits on leading signals); and going 100% cash and puts on a date (Mode A rewards the holder with powder, and a wrong-year bet costs more than the crash). Thresholds are analytical constructs for this model, not forecasts.</p>
+</section>
+
+<section id="watch">
+  <div class="sec-head"><span class="n">09</span><h2>The dashboard &mdash; what to watch, and which regime it feeds</h2></div>
+  <div class="prose"><p>Seven series tell you whether the thesis is on schedule and which way the dial should turn. Leading tells move the dial to Amber; confirming tells move it to Red. All are public or cheaply available, and slot cleanly into a custom tracking dashboard.</p></div>
+  <ul class="flat">
+    <li><span class="src">FINRA / Bloomberg</span><span class="tag">Leading</span><b>Hyperscaler credit spreads &amp; new-issue yields</b> &mdash; the first domino in Patel&rsquo;s sequence; +100 bps or a 7% print is an Amber tell, 8%+ with cancellations is Red.</li>
+    <li><span class="src">CME FedWatch / Treasury</span><span class="tag">Leading</span><b>Rate path &amp; term premium</b> &mdash; each hike stresses long-duration assets and sweetens the powder&rsquo;s yield; a 10-year through ~5.5% is an Amber tell.</li>
+    <li><span class="src">FRED / Treasury refunding</span><span class="tag">Leading</span><b>The repression gauge</b> &mdash; real policy rate (fed funds minus core PCE) and the bills share of Treasury issuance. Real rate &le;+0.5 with inflation 3&ndash;4% and a rising bills share = repression on, equity- and gold-friendly. Core through ~4.5% = Amber tell; through ~5% with the Fed forced above it = the repression break, straight to Red (&sect;08).</li>
+    <li><span class="src">SemiAnalysis</span><span class="tag">Leading</span><b>Lab revenue per MW &amp; GPU rental rates</b> &mdash; Patel&rsquo;s own economics; rolling over is Amber, heading toward $25M/MW is Red.</li>
+    <li><span class="src">earnings calls</span><span class="tag">Leading &rarr; Confirming</span><b>Top-4 hyperscaler capex guidance, YoY</b> &mdash; the master signal. Growth halving is Amber; an outright cut is Red.</li>
+    <li><span class="src">TrendForce / earnings</span><span class="tag">Thesis</span><b>HBM &amp; DRAM contract pricing</b> &mdash; the value-capture winner&rsquo;s scoreboard; drives MU and the memory LEAPS, and is the first thing to trim in Amber.</li>
+    <li><span class="src">GEV / utility reports</span><span class="tag">Thesis</span><b>Turbine lead times &amp; GW additions</b> &mdash; the power bottleneck&rsquo;s tightness gauge; a broad moratorium is Red.</li>
+    <li><span class="src">S-1s / press</span><span class="tag">Event</span><b>OpenAI &amp; Anthropic listing signals</b> &mdash; Anthropic reportedly filed confidentially in June 2026; entries governed by the IPO protocol in &sect;07.</li>
+  </ul>
+</section>
+
+<section id="sources" class="disclaimer">
+  <div class="eyebrow" style="margin-bottom:12px">Sources &amp; disclaimer</div>
+  <p class="footnote">Thesis: <a href="https://www.dwarkesh.com/p/dylan-patel-3">Dylan Patel &mdash; &ldquo;Anthropic &amp; OpenAI will have most of the world&rsquo;s compute by 2028,&rdquo; Dwarkesh Podcast, Aug 25 2026</a> (all compute, capex, pricing, rate, and crash-scenario projections above are his and Dwarkesh&rsquo;s, paraphrased). Macro: <a href="https://www.chase.com/personal/investments/learning-and-insights/article/september-2026-rate-hike-now-expected-amid-energy-shocks">J.P. Morgan Wealth Management on September 2026 hike odds</a>; <a href="https://fedratecalc.com/fomc-meeting-schedule/september-2026/">FOMC schedule (Sep 15&ndash;16, 2026)</a>; <a href="https://www.cnbc.com/2026/08/27/stock-market-today-live-updates.html">CNBC market coverage, week of Aug 24 2026</a>. Seasonality figures are long-run S&amp;P 500 historical tendencies (since 1950 / 1946). SPCX: <a href="https://www.fool.com/investing/2026/06/27/spacex-data-center-deals-anthropic-googl-stock/">Motley Fool on the Anthropic/Google/Reflection compute deals (Jun 27 2026)</a>; <a href="https://techcrunch.com/2026/06/05/google-will-pay-spacex-920m-per-month-for-compute/">TechCrunch on the Google contract</a>. Lab IPOs: <a href="https://www.cnbc.com/2026/08/19/open-ai-ipo-timing-2027-friar.html">CNBC on OpenAI CFO Friar&rsquo;s 2027 timeline (Aug 19 2026)</a>; Anthropic S-1 and October-window reporting is unconfirmed press sourcing as of Aug 30 2026.</p>
+  <p class="footnote" style="margin-top:10px"><b>This is an educational model portfolio, not investment advice.</b> It was prepared by an AI from a podcast transcript and public sources, for a hypothetical $100,000 with stated high risk tolerance. It is concentrated, leveraged via options that can expire worthless, and built on projections that may not materialize. Drawdown estimates and regime thresholds are analytical constructs, not forecasts. Nothing here accounts for your full financial situation &mdash; verify prices, strikes, and tax treatment with your brokerage, and consider a licensed advisor before acting.</p>
+</section>
+
+</div>
+
+<script>
+  (function(){
+    var tip=document.createElement('div'); tip.id='tip'; tip.hidden=true; document.body.appendChild(tip);
+    document.querySelectorAll('.seg').forEach(function(s){
+      s.addEventListener('mousemove',function(e){
+        tip.textContent=s.dataset.n.replace(/&amp;/g,'&')+' — '+s.dataset.v;
+        tip.hidden=false;
+        var x=Math.min(e.clientX+14, window.innerWidth-tip.offsetWidth-8);
+        tip.style.left=x+'px'; tip.style.top=(e.clientY+16)+'px';
+      });
+      s.addEventListener('mouseleave',function(){ tip.hidden=true; });
+    });
+  })();
+
+  /* Live tells — renders strategy-data.json when this page is hosted alongside
+     the daily pipeline. Anywhere else (artifact, local file) the strip stays hidden. */
+  (function(){
+    fetch('strategy-data.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){
+      var g = document.getElementById('lv-grid');
+      function cell(k, v, s, state){
+        var el = document.createElement('div');
+        el.className = 'lv' + (state ? ' ' + state : '');
+        el.innerHTML = '<div class="k"></div><div class="v"></div>' + (s ? '<div class="s"></div>' : '');
+        el.children[0].textContent = k; el.children[1].textContent = v;
+        if (s) el.children[2].textContent = s;
+        g.appendChild(el);
+      }
+      var rr = d.real_policy_rate, pce = d.core_pce && d.core_pce.yoy;
+      cell('Real policy rate', rr == null ? '—' : (rr > 0 ? '+' : '') + rr.toFixed(2) + '%',
+           d.repression_on ? 'repression on' : 'repression off',
+           (pce != null && pce >= 5 && rr >= 1.5) ? 'crit' : null);
+      if (pce != null) cell('Core PCE YoY', pce.toFixed(2) + '%', d.core_pce.date,
+           pce >= 5 ? 'crit' : (pce >= 4.5 ? 'amber' : null));
+      if (d.fed_funds) cell('Fed funds', d.fed_funds.value.toFixed(2) + '%', d.fed_funds.date);
+      if (d.ust10y && d.ust30y) cell('10y / 30y', d.ust10y.value.toFixed(2) + ' / ' + d.ust30y.value.toFixed(2),
+           '5.5% = amber tell', d.ust10y.value >= 5.5 ? 'amber' : null);
+      if (d.ig_oas) cell('IG OAS vs tights', '+' + d.ig_oas.widening_bps + 'bps',
+           (d.ig_oas.value * 100).toFixed(0) + 'bps now', d.ig_oas.widening_bps >= 100 ? 'amber' : null);
+      if (d.breakeven_5y5y) cell('5y5y breakeven', d.breakeven_5y5y.value.toFixed(2) + '%',
+           'anchored < 2.8', d.breakeven_5y5y.value >= 2.8 ? 'amber' : null);
+      if (d.qqq) cell('QQQ drawdown', d.qqq.drawdown_pct.toFixed(1) + '%',
+           'ladder: −15/−25/−35', d.qqq.drawdown_pct <= -15 ? 'amber' : null);
+      if (d.smh && d.qqq) cell('Trend', (d.qqq.above_200dma ? 'QQQ↑' : 'QQQ↓') + ' ' + (d.smh.above_252dma ? 'SMH↑' : 'SMH↓'),
+           'vs 200d / 252d', (!d.qqq.above_200dma && !d.smh.above_252dma) ? 'amber' : null);
+      if (d.bills_share) cell('Bills share', d.bills_share.bills_pct.toFixed(1) + '%', 'of marketable debt');
+      if (d.term_premium) cell('Term premium', d.term_premium.value.toFixed(2) + '%', '10y (Kim-Wright)');
+
+      var reg = document.getElementById('lv-regime');
+      var map = { GREEN: ['good', '● GREEN'], AMBER: ['warn', '▲ AMBER'], RED: ['crit', '■ RED'] };
+      var m = map[d.regime] || map.GREEN;
+      reg.className = 'pill ' + m[0]; reg.textContent = m[1];
+      document.getElementById('lv-asof').textContent = 'data ' + d.as_of +
+        (d.errors && d.errors.length ? ' · ' + d.errors.length + ' feed(s) stale' : '');
+      var tells = (d.red_flags || []).concat(d.amber_tells || []);
+      if (tells.length){
+        var lst = document.getElementById('lv-list');
+        lst.textContent = 'Active tells: ' + tells.join(' · ');
+        lst.hidden = false;
+      }
+      document.getElementById('live').hidden = false;
+    }).catch(function(){ /* no data source here — strip stays hidden */ });
+  })();
+</script>

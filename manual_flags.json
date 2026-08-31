@@ -1,0 +1,12 @@
+{
+  "_comment": "Event tells that can't be automated. Flip to true when the event happens (edit from phone via github.com or Claude Code). The daily script folds these into the regime calculation.",
+  "_amber_flags": "capex_growth_halved, rev_per_mw_rolling_over",
+  "capex_growth_halved": false,
+  "rev_per_mw_rolling_over": false,
+  "_red_flags": "any one of these alone forces RED",
+  "capex_guide_cut": false,
+  "lab_contract_out": false,
+  "neocloud_default": false,
+  "federal_moratorium": false,
+  "depreciation_reversal": false
+}
