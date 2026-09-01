@@ -575,6 +575,8 @@
            'anchored < 2.8', d.breakeven_5y5y.value >= 2.8 ? 'amber' : null, d.breakeven_5y5y.date);
       if (d.qqq) cell('QQQ drawdown', d.qqq.drawdown_pct.toFixed(1) + '%',
            'ladder: −15/−25/−35', d.qqq.drawdown_pct <= -15 ? 'amber' : null, d.qqq.date);
+      if (d.vol) cell('Vol (' + d.vol.kind + ')', d.vol.value.toFixed(1),
+           'puts cheap < 20', d.vol.value >= 28 ? 'amber' : null, d.vol.date);
       if (d.smh && d.qqq) cell('Trend', (d.qqq.above_200dma ? 'QQQ↑' : 'QQQ↓') + ' ' + (d.smh.above_252dma ? 'SMH↑' : 'SMH↓'),
            'vs 200d / 252d', (!d.qqq.above_200dma && !d.smh.above_252dma) ? 'amber' : null, d.smh.date);
       if (d.bills_share) cell('Bills share', d.bills_share.bills_pct.toFixed(1) + '%', 'of marketable debt',

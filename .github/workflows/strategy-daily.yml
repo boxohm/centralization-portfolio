@@ -2,7 +2,7 @@ name: strategy-daily-data
 
 on:
   schedule:
-    - cron: "30 13-20 * * 1-5"  # hourly through the US session (13:30–20:30 UTC)
+    - cron: "*/20 13-20 * * 1-5"  # every 20 min through the US session
     - cron: "45 22 * * 1-5"     # 22:45 UTC weekdays, after US market close
   workflow_dispatch: {}
 
@@ -19,6 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Fetch strategy data
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
         run: python3 scripts/fetch_strategy_data.py
       - name: Commit if changed
         run: |

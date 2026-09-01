@@ -8,25 +8,28 @@ strategy-data.json next to strategy.html.
 No API keys required. Every fetch is independent — partial failures degrade
 gracefully and are marked in the output.
 """
-import json, csv, io, urllib.request, datetime, pathlib, shutil, subprocess, sys
+import json, csv, io, math, os, urllib.request, datetime, pathlib, shutil, subprocess, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "strategy-data.json"
 FLAGS = ROOT / "manual_flags.json"
 UA = "Mozilla/5.0"
 
-def get(url, timeout=30):
+def get(url, timeout=30, headers=None):
     """Fetch a URL as text. Tries curl bare, then curl with a browser UA,
-    then urllib — some hosts want a UA, some proxies reject one."""
+    then urllib — some hosts want a UA, some proxies reject one.
+    Auth goes in headers, never in the URL, so error strings (which embed
+    the URL and end up committed in strategy-data.json) can't leak a key."""
+    hargs = [a for k, v in (headers or {}).items() for a in ("-H", f"{k}: {v}")]
     if shutil.which("curl"):
         for extra in ([], ["-A", UA]):
             p = subprocess.run(["curl", "-sfL", "--http1.1", "-m", str(timeout),
-                                *extra, url],
+                                *hargs, *extra, url],
                                capture_output=True, timeout=timeout + 10)
             if p.returncode == 0 and p.stdout:
                 return p.stdout.decode("utf-8", "replace")
         raise RuntimeError(f"curl exit {p.returncode} for {url}")
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    req = urllib.request.Request(url, headers={"User-Agent": UA, **(headers or {})})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.read().decode("utf-8", "replace")
 
@@ -51,6 +54,32 @@ def yahoo_closes(symbol, rng="5y"):
     ts = j["timestamp"]
     return [(datetime.date.fromtimestamp(t).isoformat(), c)
             for t, c in zip(ts, closes) if c is not None]
+
+def massive_closes(ticker, days):
+    """Daily closes from the Massive (Polygon) aggregates API.
+    Requires MASSIVE_API_KEY in the environment; raises if absent or if the
+    plan doesn't cover the ticker (e.g. I:VIX without the indices feed)."""
+    key = os.environ.get("MASSIVE_API_KEY")
+    if not key:
+        raise RuntimeError("no MASSIVE_API_KEY")
+    end = datetime.date.today()
+    start = end - datetime.timedelta(days=days)
+    txt = get(f"https://api.polygon.io/v2/aggs/ticker/{ticker}/range/1/day/"
+              f"{start}/{end}?adjusted=true&sort=asc&limit=50000",
+              headers={"Authorization": f"Bearer {key}"})
+    j = json.loads(txt)
+    res = j.get("results") or []
+    if not res:
+        raise RuntimeError(f"massive empty for {ticker}: {j.get('status')}")
+    return [(datetime.date.fromtimestamp(r["t"] / 1000).isoformat(), r["c"])
+            for r in res if r.get("c") is not None]
+
+def closes(symbol, days, yahoo_rng):
+    """Massive first, Yahoo fallback. Returns (series, source)."""
+    try:
+        return massive_closes(symbol, days), "massive"
+    except Exception:  # noqa: BLE001 — any failure falls back
+        return yahoo_closes(symbol, yahoo_rng), "yahoo"
 
 def bills_share():
     url = ("https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
@@ -108,23 +137,44 @@ safe("ig_oas", lambda: oas("BAMLC0A0CM"))
 safe("hy_oas", lambda: oas("BAMLH0A0HYM2"))
 
 def qqq_stats():
-    s = yahoo_closes("QQQ", "5y")
-    closes = [c for _, c in s]
+    s, src = closes("QQQ", 1850, "5y")
+    cl = [c for _, c in s]
     last_d, last = s[-1]
-    ath = max(closes)
-    sma200 = sum(closes[-200:]) / min(200, len(closes))
+    ath = max(cl)
+    sma200 = sum(cl[-200:]) / min(200, len(cl))
     return {"date": last_d, "close": round(last, 2), "ath": round(ath, 2),
             "drawdown_pct": round(100 * (last / ath - 1), 1),
-            "above_200dma": last >= sma200}
+            "above_200dma": last >= sma200, "src": src}
 safe("qqq", qqq_stats)
 
 def smh_stats():
-    s = yahoo_closes("SMH", "2y")
-    closes = [c for _, c in s]
+    s, src = closes("SMH", 740, "2y")
+    cl = [c for _, c in s]
     last_d, last = s[-1]
-    sma252 = sum(closes[-252:]) / min(252, len(closes))
-    return {"date": last_d, "close": round(last, 2), "above_252dma": last >= sma252}
+    sma252 = sum(cl[-252:]) / min(252, len(cl))
+    return {"date": last_d, "close": round(last, 2),
+            "above_252dma": last >= sma252, "src": src}
 safe("smh", smh_stats)
+
+def vol_gauge():
+    """Hedge-cost tell for the Amber playbook ('puts while vol is cheap').
+    VIX close via Massive's indices feed when the plan covers it; otherwise
+    QQQ 20-day realized vol, annualized, as a rough stand-in."""
+    try:
+        s = massive_closes("I:VIX", 400)
+        d, v = s[-1]
+        yr = [c for _, c in s[-252:]]
+        return {"date": d, "value": round(v, 1), "kind": "VIX",
+                "pctile_1y": round(100 * sum(1 for c in yr if c <= v) / len(yr))}
+    except Exception:  # noqa: BLE001
+        s, src = closes("QQQ", 90, "3mo")
+        rets = [math.log(s[i][1] / s[i - 1][1])
+                for i in range(len(s) - 20, len(s))]
+        mean = sum(rets) / len(rets)
+        var = sum((r - mean) ** 2 for r in rets) / (len(rets) - 1)
+        return {"date": s[-1][0], "value": round(math.sqrt(var * 252) * 100, 1),
+                "kind": "QQQ 20d realized", "src": src}
+safe("vol", vol_gauge)
 safe("bills_share", bills_share)
 
 # --- manual event flags ------------------------------------------------------
