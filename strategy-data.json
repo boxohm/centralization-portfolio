@@ -48,18 +48,26 @@
   "close": 716.76,
   "ath": 746.16,
   "drawdown_pct": -3.9,
-  "above_200dma": true
+  "above_200dma": true,
+  "src": "massive"
  },
  "smh": {
   "date": "2026-08-31",
   "close": 556.63,
-  "above_252dma": true
+  "above_252dma": true,
+  "src": "massive"
+ },
+ "vol": {
+  "date": "2026-08-31",
+  "value": 17.3,
+  "kind": "QQQ 20d realized",
+  "src": "massive"
  },
  "bills_share": {
   "date": "2026-07-31",
   "bills_pct": 22.2
  },
- "as_of": "2026-09-01 01:23 UTC",
+ "as_of": "2026-09-01 12:59 UTC",
  "real_policy_rate": 0.29,
  "repression_on": true,
  "amber_tells": [],
