@@ -76,6 +76,8 @@
   .lv .s{font-size:11.5px; color:var(--ink-2); margin-top:2px}
   .lv.amber{border-color:var(--warn); background:var(--warn-bg)}
   .lv.crit{border-color:var(--crit); background:var(--crit-bg)}
+  .lv.stale{border-style:dashed}
+  .live .st{color:var(--crit); font-weight:600; font-size:10px; letter-spacing:.06em; text-transform:uppercase}
   .live-tells{font-size:13px; color:var(--ink-2); margin:10px 0 0}
   /* One-page summary + contents */
   .summary{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:36px 0 10px}
@@ -529,44 +531,72 @@
   })();
 
   /* Live tells — renders strategy-data.json when this page is hosted alongside
-     the daily pipeline. Anywhere else (artifact, local file) the strip stays hidden. */
+     the data pipeline. Anywhere else (artifact, local file) the strip stays hidden.
+     The fetch is cache-busted so every page load pulls the newest committed data,
+     and each tile carries the observation date of its own series. */
   (function(){
-    fetch('strategy-data.json').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){
+    fetch('strategy-data.json?t=' + Date.now(), {cache:'no-store'}).then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(d){
       var g = document.getElementById('lv-grid');
-      function cell(k, v, s, state){
+      var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      function ageDays(iso){ var t = Date.parse(iso + 'T00:00:00Z'); return isNaN(t) ? null : (Date.now() - t) / 864e5; }
+      function fmtDate(iso, monthly){
+        var p = iso.split('-');
+        if (p.length !== 3) return iso;
+        return monthly ? MONTHS[+p[1]-1] + ' ' + p[0] : MONTHS[+p[1]-1] + ' ' + (+p[2]);
+      }
+      function cell(k, v, s, state, date, opts){
+        opts = opts || {};
+        var a = date ? ageDays(date) : null;
+        var isStale = a != null && a > (opts.maxAge || 5);
         var el = document.createElement('div');
-        el.className = 'lv' + (state ? ' ' + state : '');
-        el.innerHTML = '<div class="k"></div><div class="v"></div>' + (s ? '<div class="s"></div>' : '');
+        el.className = 'lv' + (state ? ' ' + state : '') + (isStale ? ' stale' : '');
+        el.innerHTML = '<div class="k"></div><div class="v"></div><div class="s"></div>';
         el.children[0].textContent = k; el.children[1].textContent = v;
-        if (s) el.children[2].textContent = s;
+        el.children[2].textContent = (s ? s + ' · ' : '') + (date ? fmtDate(date, opts.monthly) : '');
+        if (isStale){
+          var b = document.createElement('b'); b.className = 'st'; b.textContent = ' · stale';
+          el.children[2].appendChild(b);
+        }
         g.appendChild(el);
       }
       var rr = d.real_policy_rate, pce = d.core_pce && d.core_pce.yoy;
       cell('Real policy rate', rr == null ? '—' : (rr > 0 ? '+' : '') + rr.toFixed(2) + '%',
            d.repression_on ? 'repression on' : 'repression off',
-           (pce != null && pce >= 5 && rr >= 1.5) ? 'crit' : null);
-      if (pce != null) cell('Core PCE YoY', pce.toFixed(2) + '%', d.core_pce.date,
-           pce >= 5 ? 'crit' : (pce >= 4.5 ? 'amber' : null));
-      if (d.fed_funds) cell('Fed funds', d.fed_funds.value.toFixed(2) + '%', d.fed_funds.date);
+           (pce != null && rr != null && pce >= 5 && rr >= 1.5) ? 'crit' : null,
+           d.fed_funds && d.fed_funds.date);
+      if (pce != null) cell('Core PCE YoY', pce.toFixed(2) + '%', 'amber ≥ 4.5',
+           pce >= 5 ? 'crit' : (pce >= 4.5 ? 'amber' : null), d.core_pce.date, {monthly:true, maxAge:100});
+      if (d.fed_funds) cell('Fed funds', d.fed_funds.value.toFixed(2) + '%', null, null, d.fed_funds.date);
       if (d.ust10y && d.ust30y) cell('10y / 30y', d.ust10y.value.toFixed(2) + ' / ' + d.ust30y.value.toFixed(2),
-           '5.5% = amber tell', d.ust10y.value >= 5.5 ? 'amber' : null);
+           '5.5% = amber tell', d.ust10y.value >= 5.5 ? 'amber' : null, d.ust10y.date);
       if (d.ig_oas) cell('IG OAS vs tights', '+' + d.ig_oas.widening_bps + 'bps',
-           (d.ig_oas.value * 100).toFixed(0) + 'bps now', d.ig_oas.widening_bps >= 100 ? 'amber' : null);
+           (d.ig_oas.value * 100).toFixed(0) + 'bps now', d.ig_oas.widening_bps >= 100 ? 'amber' : null, d.ig_oas.date);
       if (d.breakeven_5y5y) cell('5y5y breakeven', d.breakeven_5y5y.value.toFixed(2) + '%',
-           'anchored < 2.8', d.breakeven_5y5y.value >= 2.8 ? 'amber' : null);
+           'anchored < 2.8', d.breakeven_5y5y.value >= 2.8 ? 'amber' : null, d.breakeven_5y5y.date);
       if (d.qqq) cell('QQQ drawdown', d.qqq.drawdown_pct.toFixed(1) + '%',
-           'ladder: −15/−25/−35', d.qqq.drawdown_pct <= -15 ? 'amber' : null);
+           'ladder: −15/−25/−35', d.qqq.drawdown_pct <= -15 ? 'amber' : null, d.qqq.date);
       if (d.smh && d.qqq) cell('Trend', (d.qqq.above_200dma ? 'QQQ↑' : 'QQQ↓') + ' ' + (d.smh.above_252dma ? 'SMH↑' : 'SMH↓'),
-           'vs 200d / 252d', (!d.qqq.above_200dma && !d.smh.above_252dma) ? 'amber' : null);
-      if (d.bills_share) cell('Bills share', d.bills_share.bills_pct.toFixed(1) + '%', 'of marketable debt');
-      if (d.term_premium) cell('Term premium', d.term_premium.value.toFixed(2) + '%', '10y (Kim-Wright)');
+           'vs 200d / 252d', (!d.qqq.above_200dma && !d.smh.above_252dma) ? 'amber' : null, d.smh.date);
+      if (d.bills_share) cell('Bills share', d.bills_share.bills_pct.toFixed(1) + '%', 'of marketable debt',
+           null, d.bills_share.date, {monthly:true, maxAge:100});
+      if (d.term_premium) cell('Term premium', d.term_premium.value.toFixed(2) + '%', '10y (Kim-Wright)',
+           null, d.term_premium.date, {maxAge:14});
 
       var reg = document.getElementById('lv-regime');
       var map = { GREEN: ['good', '● GREEN'], AMBER: ['warn', '▲ AMBER'], RED: ['crit', '■ RED'] };
       var m = map[d.regime] || map.GREEN;
       reg.className = 'pill ' + m[0]; reg.textContent = m[1];
-      document.getElementById('lv-asof').textContent = 'data ' + d.as_of +
-        (d.errors && d.errors.length ? ' · ' + d.errors.length + ' feed(s) stale' : '');
+      var now = new Date();
+      var asof = document.getElementById('lv-asof');
+      asof.textContent = 'fetched ' + d.as_of + ' · loaded ' +
+        ('0' + now.getUTCHours()).slice(-2) + ':' + ('0' + now.getUTCMinutes()).slice(-2) + ' UTC' +
+        (d.errors && d.errors.length ? ' · ' + d.errors.length + ' feed(s) failed' : '');
+      var fetchedAt = Date.parse((d.as_of || '').replace(' ', 'T').replace(' UTC', 'Z'));
+      var allowH = [80, 80, 30, 30, 30, 30, 30][now.getUTCDay()]; // weekend gap: no runs Sat/Sun
+      if (!isNaN(fetchedAt) && (Date.now() - fetchedAt) / 36e5 > allowH){
+        var pb = document.createElement('b'); pb.className = 'st'; pb.textContent = ' · pipeline stale';
+        asof.appendChild(pb);
+      }
       var tells = (d.red_flags || []).concat(d.amber_tells || []);
       if (tells.length){
         var lst = document.getElementById('lv-list');

@@ -12,7 +12,7 @@ with the regime dial evaluated from fresh data (Green / Amber / Red).
 | `scripts/fetch_strategy_data.py` | Daily fetcher — FRED, Yahoo chart API, Treasury FiscalData; no API keys; computes the tells and the suggested regime |
 | `strategy-data.json` | Output — committed daily by the workflow |
 | `manual_flags.json` | Event tells that can't be automated (capex guide cut, lab contract out, default, moratorium, write-down). Flip to `true` when one happens — from the GitHub editor or a Claude Code session |
-| `.github/workflows/strategy-daily.yml` | Runs the fetcher 22:45 UTC weekdays and commits the result |
+| `.github/workflows/strategy-daily.yml` | Runs the fetcher hourly through the US session (13:30–20:30 UTC) plus 22:45 UTC weekdays, committing when the data changed. The page cache-busts its fetch, so a refresh always shows the newest committed data; every tile carries its own observation date and flags itself `stale` when the series is older than its normal cadence |
 
 ## Setup — new repo, entirely from a phone
 
