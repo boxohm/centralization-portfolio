@@ -28,8 +28,8 @@
   "value": 2.31
  },
  "term_premium": {
-  "date": "2026-08-21",
-  "value": 0.8682
+  "date": "2026-08-28",
+  "value": 0.8751
  },
  "ig_oas": {
   "date": "2026-08-31",
@@ -45,21 +45,21 @@
  },
  "qqq": {
   "date": "2026-09-01",
-  "close": 709.18,
+  "close": 707.37,
   "ath": 746.16,
-  "drawdown_pct": -5.0,
+  "drawdown_pct": -5.2,
   "above_200dma": true,
   "src": "massive"
  },
  "smh": {
   "date": "2026-09-01",
-  "close": 546.96,
+  "close": 544.71,
   "above_252dma": true,
   "src": "massive"
  },
  "vol": {
   "date": "2026-09-01",
-  "value": 12.9,
+  "value": 13.2,
   "kind": "QQQ 20d realized",
   "src": "massive"
  },
@@ -67,7 +67,7 @@
   "date": "2026-07-31",
   "bills_pct": 22.2
  },
- "as_of": "2026-09-01 17:12 UTC",
+ "as_of": "2026-09-01 19:56 UTC",
  "real_policy_rate": 0.29,
  "repression_on": true,
  "amber_tells": [],
