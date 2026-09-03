@@ -45,21 +45,21 @@
  },
  "qqq": {
   "date": "2026-09-03",
-  "close": 716.8,
+  "close": 717.85,
   "ath": 746.16,
-  "drawdown_pct": -3.9,
+  "drawdown_pct": -3.8,
   "above_200dma": true,
   "src": "massive"
  },
  "smh": {
   "date": "2026-09-03",
-  "close": 549.83,
+  "close": 552.11,
   "above_252dma": true,
   "src": "massive"
  },
  "vol": {
   "date": "2026-09-03",
-  "value": 13.4,
+  "value": 13.6,
   "kind": "QQQ 20d realized",
   "src": "massive"
  },
@@ -67,7 +67,7 @@
   "date": "2026-07-31",
   "bills_pct": 22.2
  },
- "as_of": "2026-09-03 16:44 UTC",
+ "as_of": "2026-09-03 19:29 UTC",
  "real_policy_rate": 0.29,
  "repression_on": true,
  "amber_tells": [],
