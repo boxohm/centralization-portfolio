@@ -1,5 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Centralization Portfolio</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<script>
+  (function(){
+    var q = '(max-width: 720px), (max-width: 900px) and (pointer: coarse)';
+    function sync(){ document.documentElement.classList.toggle('mobile', window.matchMedia(q).matches); }
+    sync();
+    try { window.matchMedia(q).addEventListener('change', sync); }
+    catch (e) { window.matchMedia(q).addListener(sync); }
+  })();
+</script>
 <style>
   :root{
     color-scheme: light;
@@ -37,14 +51,20 @@
     --good:#6fd18a; --good-bg:#16301e; --warn:#f2c05c; --warn-bg:#33280f; --crit:#ff8a80; --crit-bg:#3b1b18;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{
+    scroll-behavior:smooth;
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+    overflow-x:clip;
+  }
   body{
     background:var(--bg); color:var(--ink); margin:0;
     font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
     font-size:16.5px; line-height:1.62;
     -webkit-font-smoothing:antialiased;
+    overflow-x:clip;
   }
-  .wrap{max-width:920px; margin:0 auto; padding:0 24px 96px}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px 96px; overflow-wrap:break-word}
   .prose{max-width:730px}
   h1,h2,h3{font-family:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif; text-wrap:balance; margin:0}
   a{color:var(--accent-ink); text-decoration-color:color-mix(in srgb, var(--accent) 45%, transparent); text-underline-offset:3px}
@@ -87,9 +107,9 @@
   .sum p:last-child{margin:0}
   .sum b{color:var(--ink)}
   .toc{display:grid; grid-template-columns:repeat(3,1fr); gap:0 24px; margin:22px 0 0; padding:0; list-style:none}
-  .toc li{font-family:"IBM Plex Mono",monospace; font-size:12.5px; padding:7px 0; border-bottom:1px solid var(--line)}
-  .toc li span{color:var(--ink-3); margin-right:10px}
-  .toc a{text-decoration:none; color:var(--ink)}
+  .toc li{font-family:"IBM Plex Mono",monospace; font-size:12.5px; padding:0; border-bottom:1px solid var(--line)}
+  .toc a{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); padding:7px 0; min-height:36px}
+  .toc a span{color:var(--ink-3); flex:none}
   .toc a:hover{color:var(--accent-ink); text-decoration:underline}
 
   /* Parts & sections */
@@ -192,17 +212,140 @@
   ul.flat .tag{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent-ink); margin-right:8px}
 
   .disclaimer{margin-top:56px; border-top:3px solid var(--ink); padding-top:18px}
-  @media (max-width:640px){
-    .summary{grid-template-columns:1fr}
-    .toc{grid-template-columns:1fr 1fr}
-    .phase{grid-template-columns:1fr; gap:6px}
-    .seg .pct{display:none}
-    .masthead{padding-top:44px}
-    .part{flex-wrap:wrap}
+  @media (max-width:720px), (max-width:900px) and (pointer:coarse){
+    body{font-size:16.5px; line-height:1.6}
+    .wrap{padding:0 max(16px, env(safe-area-inset-right)) 80px max(16px, env(safe-area-inset-left))}
+
+    .masthead{padding:28px 0 22px}
+    .masthead h1{font-size:clamp(26px, 8vw, 36px); margin:10px 0 12px}
+    .dek{font-size:16.5px; line-height:1.5; margin:0 0 16px}
+    .byline{font-size:11.5px; gap:4px 14px; margin-bottom:16px}
+    .chips{gap:8px}
+    .chip{padding:8px 12px; font-size:12px}
+
+    .live{padding:14px}
+    .live-head{gap:8px}
+    .live-head .asof{margin-left:0; width:100%; white-space:normal}
+    .live-grid{grid-template-columns:repeat(2, minmax(0,1fr))}
+    .lv .v{font-size:16px; overflow-wrap:anywhere}
+
+    .summary{grid-template-columns:1fr; margin:24px 0 8px}
+    .sum{padding:16px}
+
+    .toc{grid-template-columns:1fr; gap:0; margin-top:18px}
+    .toc a{min-height:44px; padding:12px 0; font-size:14.5px; touch-action:manipulation}
+
+    .part{margin-top:40px; flex-wrap:wrap}
     .part .span{margin-left:0; width:100%}
+    .part h2{font-size:14px}
+    section{padding:28px 0 4px}
+    .sec-head{flex-wrap:wrap; gap:6px 10px; margin-bottom:16px}
+    .sec-head h2{font-size:20px}
+
+    h3{overflow-wrap:anywhere}
+    blockquote{font-size:18px; padding-left:14px}
+
+    .tiles{grid-template-columns:1fr; gap:8px}
+    .tile .v{font-size:24px; overflow-wrap:anywhere}
+
+    .box{padding:16px}
+
+    .bar{height:36px}
+    .seg .pct{display:none}
+    .legend{grid-template-columns:1fr}
+    .lg{flex-wrap:wrap; gap:6px 10px}
+    .lg .val{margin-left:0; white-space:normal}
+
+    .modes{grid-template-columns:1fr}
+    .mode .hit{overflow-wrap:anywhere}
+    .phase{grid-template-columns:1fr; gap:6px}
+
+    .timeline li{padding-left:28px}
+    .timeline .amt{display:block; margin:2px 0 0}
+
+    ul.flat .src{float:none; display:block; white-space:normal; margin:2px 0 6px}
+    ul.flat li{padding:14px 0}
+
+    /* Tables: stacked cards — page stays one-axis; no min-width desktop table */
+    table{min-width:0; font-size:16px}
+    .tbl-wrap.cards{
+      overflow:visible; border:0; border-radius:0; margin:16px 0;
+    }
+    table.stack, table.stack tbody{display:block; width:100%}
+    table.stack thead{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    }
+    table.stack tbody tr{
+      display:block; background:var(--bg-raised); border:1px solid var(--line);
+      border-radius:10px; padding:14px 16px; margin:0 0 10px;
+    }
+    table.stack tbody tr.subrow{
+      background:transparent; border:0; border-radius:0; padding:14px 4px 6px; margin:14px 0 2px;
+    }
+    table.stack tbody tr.subrow:first-child{margin-top:0; padding-top:4px}
+    table.stack tbody tr.subrow td{background:transparent; padding:0}
+    table.stack td{
+      display:block; width:100%; text-align:left; padding:5px 0; border:none;
+      white-space:normal; overflow-wrap:anywhere;
+    }
+    table.stack td.r, table.stack th.r{text-align:left}
+    table.stack td.tick{white-space:normal; font-size:16px}
+    table.stack td::before{
+      content:attr(data-label);
+      display:block;
+      font-family:"IBM Plex Mono",ui-monospace,monospace;
+      font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--ink-3); font-weight:500; margin-bottom:2px;
+    }
+    table.stack td:not([data-label])::before,
+    table.stack tr.subrow td::before{content:none; display:none}
+
+    /* Allocation tickets: ticker as title, weight/$ on one row, thesis as body */
+    table.tickets tbody tr:not(.subrow){
+      display:grid;
+      grid-template-columns:1fr auto auto;
+      grid-template-areas:"tick wt dol" "why why why";
+      gap:2px 12px; align-items:baseline;
+    }
+    table.tickets td.tick{grid-area:tick; font-size:18px; padding:0 0 8px; margin-bottom:4px; border-bottom:1px solid var(--line)}
+    table.tickets td.tick::before{display:none; content:none}
+    table.tickets td:nth-child(2){grid-area:wt; padding:4px 0 0; font-size:14px}
+    table.tickets td:nth-child(3){grid-area:dol; padding:4px 0 0; font-size:14px}
+    table.tickets td:nth-child(4){grid-area:why; padding:10px 0 0; color:var(--ink-2); font-size:14.5px; line-height:1.5}
+    table.tickets td:nth-child(4)::before{margin-bottom:4px}
+
+    /* LEAPS / 2-col rules: rule as title */
+    table.rules td.tick{font-size:15px; padding-bottom:2px}
+    table.rules td.tick::before{display:none; content:none}
+    table.rules td:last-child{color:var(--ink-2); font-size:14.5px; line-height:1.5}
+
+    /* Powder ladder: trigger title, deploy + into */
+    table.ladder tbody tr{
+      display:grid;
+      grid-template-columns:1fr auto;
+      grid-template-areas:"tick dep" "into into";
+      gap:2px 12px; align-items:baseline;
+    }
+    table.ladder td.tick{grid-area:tick; font-size:18px}
+    table.ladder td.tick::before{display:none; content:none}
+    table.ladder td:nth-child(2){grid-area:dep}
+    table.ladder td:nth-child(3){grid-area:into; padding-top:8px; color:var(--ink-2); font-size:14.5px}
+
+    /* Regime dial: one card per regime, labeled rows */
+    table.regime td:first-child{padding-bottom:8px; margin-bottom:6px; border-bottom:1px solid var(--line)}
+    table.regime td:first-child::before{display:none; content:none}
+    table.regime td{font-size:14.5px; line-height:1.5}
+
+    #tip{max-width:min(280px, calc(100vw - 16px)); white-space:normal}
+  }
+  @media (max-width:420px){
+    .live-grid{grid-template-columns:1fr}
   }
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
 </style>
+</head>
+<body>
 
 <div class="wrap">
 
@@ -248,15 +391,15 @@
     </div>
   </div>
   <ul class="toc">
-    <li><span>01</span><a href="#thesis">The thesis</a></li>
-    <li><span>02</span><a href="#macro">Macro overlay</a></li>
-    <li><span>03</span><a href="#allocation">The allocation</a></li>
-    <li><span>04</span><a href="#deploy">Deployment schedule</a></li>
-    <li><span>05</span><a href="#leaps">LEAPS playbook</a></li>
-    <li><span>06</span><a href="#powder">Dry powder rules</a></li>
-    <li><span>07</span><a href="#roadmap">Roadmap &amp; IPO protocol</a></li>
-    <li><span>08</span><a href="#regime">The regime dial</a></li>
-    <li><span>09</span><a href="#watch">The dashboard</a></li>
+    <li><a href="#thesis"><span>01</span>The thesis</a></li>
+    <li><a href="#macro"><span>02</span>Macro overlay</a></li>
+    <li><a href="#allocation"><span>03</span>The allocation</a></li>
+    <li><a href="#deploy"><span>04</span>Deployment schedule</a></li>
+    <li><a href="#leaps"><span>05</span>LEAPS playbook</a></li>
+    <li><a href="#powder"><span>06</span>Dry powder rules</a></li>
+    <li><a href="#roadmap"><span>07</span>Roadmap &amp; IPO protocol</a></li>
+    <li><a href="#regime"><span>08</span>The regime dial</a></li>
+    <li><a href="#watch"><span>09</span>The dashboard</a></li>
   </ul>
 </header>
 
@@ -320,34 +463,34 @@
     </div>
   </figure>
 
-  <div class="tbl-wrap"><table>
+  <div class="tbl-wrap cards"><table class="stack tickets">
     <thead><tr><th>Position</th><th class="r">Weight</th><th class="r">$</th><th>Why it&rsquo;s here (episode evidence)</th></tr></thead>
     <tbody>
       <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s1)"></span>CORE &mdash; COMPUTE TOLL ROADS &amp; LAB PROXIES &middot; 45%</td></tr>
-      <tr><td class="tick">NVDA</td><td class="r">9%</td><td class="r">45,000</td><td>Dominant accelerator with pricing power into the shortage; now designing custom silicon for OpenAI itself.</td></tr>
-      <tr><td class="tick">AVGO</td><td class="r">6%</td><td class="r">30,000</td><td>Custom ASICs + networking for the labs&rsquo; in-house chips; named among suppliers &ldquo;raising prices rapidly.&rdquo;</td></tr>
-      <tr><td class="tick">MU</td><td class="r">6%</td><td class="r">30,000</td><td>Memory is the episode&rsquo;s clearest value-capture winner &mdash; HBM demand &ldquo;insatiable,&rdquo; prices rising faster than TSMC&rsquo;s. Also the most cyclical name here: first to trim in Amber.</td></tr>
-      <tr><td class="tick">ASML</td><td class="r">4%</td><td class="r">20,000</td><td>EUV bottleneck; must reach ~100 tools/yr by 2030. Monopoly on the tool everything upstream depends on.</td></tr>
-      <tr><td class="tick">TSM</td><td class="r">4%</td><td class="r">20,000</td><td>The foundry, but Patel notes it captures &ldquo;way less value&rdquo; than memory &mdash; hence the smallest chip weight; ballast, not torque.</td></tr>
-      <tr><td class="tick">GOOGL</td><td class="r">6%</td><td class="r">30,000</td><td>Anthropic stake + TPUv7 vertical integration + the strongest balance sheet among builders &mdash; least exposed to the debt spiral. A keeper in Red.</td></tr>
-      <tr><td class="tick">MSFT</td><td class="r">5%</td><td class="r">25,000</td><td>The largest public claim on OpenAI equity and its compute economics. A keeper in Red.</td></tr>
-      <tr><td class="tick">AMZN</td><td class="r">5%</td><td class="r">25,000</td><td>Anthropic stake + Trainium3 supplier to the lab Patel says earns $50M/MW. A keeper in Red.</td></tr>
+      <tr><td class="tick">NVDA</td><td class="r" data-label="Weight">9%</td><td class="r" data-label="$">45,000</td><td data-label="Why">Dominant accelerator with pricing power into the shortage; now designing custom silicon for OpenAI itself.</td></tr>
+      <tr><td class="tick">AVGO</td><td class="r" data-label="Weight">6%</td><td class="r" data-label="$">30,000</td><td data-label="Why">Custom ASICs + networking for the labs&rsquo; in-house chips; named among suppliers &ldquo;raising prices rapidly.&rdquo;</td></tr>
+      <tr><td class="tick">MU</td><td class="r" data-label="Weight">6%</td><td class="r" data-label="$">30,000</td><td data-label="Why">Memory is the episode&rsquo;s clearest value-capture winner &mdash; HBM demand &ldquo;insatiable,&rdquo; prices rising faster than TSMC&rsquo;s. Also the most cyclical name here: first to trim in Amber.</td></tr>
+      <tr><td class="tick">ASML</td><td class="r" data-label="Weight">4%</td><td class="r" data-label="$">20,000</td><td data-label="Why">EUV bottleneck; must reach ~100 tools/yr by 2030. Monopoly on the tool everything upstream depends on.</td></tr>
+      <tr><td class="tick">TSM</td><td class="r" data-label="Weight">4%</td><td class="r" data-label="$">20,000</td><td data-label="Why">The foundry, but Patel notes it captures &ldquo;way less value&rdquo; than memory &mdash; hence the smallest chip weight; ballast, not torque.</td></tr>
+      <tr><td class="tick">GOOGL</td><td class="r" data-label="Weight">6%</td><td class="r" data-label="$">30,000</td><td data-label="Why">Anthropic stake + TPUv7 vertical integration + the strongest balance sheet among builders &mdash; least exposed to the debt spiral. A keeper in Red.</td></tr>
+      <tr><td class="tick">MSFT</td><td class="r" data-label="Weight">5%</td><td class="r" data-label="$">25,000</td><td data-label="Why">The largest public claim on OpenAI equity and its compute economics. A keeper in Red.</td></tr>
+      <tr><td class="tick">AMZN</td><td class="r" data-label="Weight">5%</td><td class="r" data-label="$">25,000</td><td data-label="Why">Anthropic stake + Trainium3 supplier to the lab Patel says earns $50M/MW. A keeper in Red.</td></tr>
       <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s4)"></span>POWER &amp; ELECTRIFICATION &middot; 10%</td></tr>
-      <tr><td class="tick">GEV</td><td class="r">3%</td><td class="r">15,000</td><td>Turbines are the scarcity he cites directly &mdash; resale arbitrage on power equipment already happening.</td></tr>
-      <tr><td class="tick">VRT</td><td class="r">3%</td><td class="r">15,000</td><td>Datacenter electrical backbone &amp; cooling; sells into every GW added, whoever wins.</td></tr>
-      <tr><td class="tick">CEG</td><td class="r">2%</td><td class="r">10,000</td><td>Largest US nuclear fleet; firm clean power is what hyperscalers sign PPAs for.</td></tr>
-      <tr><td class="tick">CCJ</td><td class="r">2%</td><td class="r">10,000</td><td>Uranium leverage to the same buildout, one step removed.</td></tr>
+      <tr><td class="tick">GEV</td><td class="r" data-label="Weight">3%</td><td class="r" data-label="$">15,000</td><td data-label="Why">Turbines are the scarcity he cites directly &mdash; resale arbitrage on power equipment already happening.</td></tr>
+      <tr><td class="tick">VRT</td><td class="r" data-label="Weight">3%</td><td class="r" data-label="$">15,000</td><td data-label="Why">Datacenter electrical backbone &amp; cooling; sells into every GW added, whoever wins.</td></tr>
+      <tr><td class="tick">CEG</td><td class="r" data-label="Weight">2%</td><td class="r" data-label="$">10,000</td><td data-label="Why">Largest US nuclear fleet; firm clean power is what hyperscalers sign PPAs for.</td></tr>
+      <tr><td class="tick">CCJ</td><td class="r" data-label="Weight">2%</td><td class="r" data-label="$">10,000</td><td data-label="Why">Uranium leverage to the same buildout, one step removed.</td></tr>
       <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s2)"></span>LEAPS &middot; 20% CAP &mdash; rules in &sect;05</td></tr>
-      <tr><td class="tick">Tranche 1</td><td class="r">10%</td><td class="r">10,000</td><td>NVDA 4% / MU 3% / AVGO 3% &mdash; Jan 2029, 0.65&ndash;0.75&Delta;, opened in the October window.</td></tr>
-      <tr><td class="tick">Tranche 2</td><td class="r">10%</td><td class="r">10,000</td><td>GOOGL 4% + 6% discretionary &mdash; opened post-midterm or on a &minus;12% QQQ drawdown, whichever comes first.</td></tr>
+      <tr><td class="tick">Tranche 1</td><td class="r" data-label="Weight">10%</td><td class="r" data-label="$">10,000</td><td data-label="Why">NVDA 4% / MU 3% / AVGO 3% &mdash; Jan 2029, 0.65&ndash;0.75&Delta;, opened in the October window.</td></tr>
+      <tr><td class="tick">Tranche 2</td><td class="r" data-label="Weight">10%</td><td class="r" data-label="$">10,000</td><td data-label="Why">GOOGL 4% + 6% discretionary &mdash; opened post-midterm or on a &minus;12% QQQ drawdown, whichever comes first.</td></tr>
       <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s5)"></span>SPECULATIVE &middot; 5%</td></tr>
-      <tr><td class="tick">SPCX</td><td class="r">2%</td><td class="r">10,000</td><td>The episode&rsquo;s case study made public: rents Colossus capacity to the labs at the ~$50M/MW premium &mdash; Anthropic $1.25B/mo, Google $920M/mo (&gt;$76B through 2029). A ~$1.9T cap and 90-day contract outs keep it spec-sized.</td></tr>
-      <tr><td class="tick">CRWV</td><td class="r">1.5%</td><td class="r">7,500</td><td>Same landlord model, levered version &mdash; build compute, rent to the labs at a premium. The debt is the thesis&rsquo;s own risk, hence the size.</td></tr>
-      <tr><td class="tick">OKLO</td><td class="r">1.5%</td><td class="r">7,500</td><td>SMR optionality on the power bottleneck &mdash; lottery-ticket sizing, priced for it.</td></tr>
+      <tr><td class="tick">SPCX</td><td class="r" data-label="Weight">2%</td><td class="r" data-label="$">10,000</td><td data-label="Why">The episode&rsquo;s case study made public: rents Colossus capacity to the labs at the ~$50M/MW premium &mdash; Anthropic $1.25B/mo, Google $920M/mo (&gt;$76B through 2029). A ~$1.9T cap and 90-day contract outs keep it spec-sized.</td></tr>
+      <tr><td class="tick">CRWV</td><td class="r" data-label="Weight">1.5%</td><td class="r" data-label="$">7,500</td><td data-label="Why">Same landlord model, levered version &mdash; build compute, rent to the labs at a premium. The debt is the thesis&rsquo;s own risk, hence the size.</td></tr>
+      <tr><td class="tick">OKLO</td><td class="r" data-label="Weight">1.5%</td><td class="r" data-label="$">7,500</td><td data-label="Why">SMR optionality on the power bottleneck &mdash; lottery-ticket sizing, priced for it.</td></tr>
       <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s6)"></span>GOLD TAIL HEDGE &middot; 5%</td></tr>
-      <tr><td class="tick">GLDM</td><td class="r">5%</td><td class="r">25,000</td><td>Hedges the fiscal-stress / default branch of the episode&rsquo;s tail and a Fed-cuts-into-bust scenario. Not a hedge for a real-rate spike (gold fell when Volcker actually did it) &mdash; the bills cover that branch.</td></tr>
+      <tr><td class="tick">GLDM</td><td class="r" data-label="Weight">5%</td><td class="r" data-label="$">25,000</td><td data-label="Why">Hedges the fiscal-stress / default branch of the episode&rsquo;s tail and a Fed-cuts-into-bust scenario. Not a hedge for a real-rate spike (gold fell when Volcker actually did it) &mdash; the bills cover that branch.</td></tr>
       <tr class="subrow"><td colspan="4"><span class="dot" style="background:var(--s3)"></span>DRY POWDER &middot; 15%</td></tr>
-      <tr><td class="tick">SGOV</td><td class="r">15%</td><td class="r">75,000</td><td>0&ndash;3&nbsp;month T-bills, ~4% after a hike. Paid to wait; deployed only by the rules in &sect;06.</td></tr>
+      <tr><td class="tick">SGOV</td><td class="r" data-label="Weight">15%</td><td class="r" data-label="$">75,000</td><td data-label="Why">0&ndash;3&nbsp;month T-bills, ~4% after a hike. Paid to wait; deployed only by the rules in &sect;06.</td></tr>
     </tbody>
   </table></div>
   <p class="footnote">Deliberate omissions: Oracle and Meta (the most debt-and-buildout-levered builders &mdash; the episode flags exactly that leverage), long-duration bond proxies (his stated losers as rates rise), and small inference resellers (undercut when labs pull compute in-house). Hyperscaler weights are moderated on purpose: Patel is explicit that builders&rsquo; margins compress even as they win.</p>
@@ -371,17 +514,17 @@
   <div class="prose">
     <p>LEAPS are the leverage on the thesis, so they get the strictest rules in the book. Deep in-the-money on purpose: in a hike-risk regime you want to pay for intrinsic value, not implied volatility. They are also the first thing to come off when the regime turns (&sect;08).</p>
   </div>
-  <div class="tbl-wrap"><table>
+  <div class="tbl-wrap cards"><table class="stack rules">
     <thead><tr><th>Rule</th><th>Setting</th></tr></thead>
     <tbody>
-      <tr><td class="tick">Structure</td><td>Calls only, 0.65&ndash;0.75 delta, 18&ndash;30 months out &mdash; Jan 2029 series as they list this fall.</td></tr>
-      <tr><td class="tick">Tranche 1 &mdash; 10%</td><td>Oct 1&ndash;15 window (September behind, fresh 2029 expiries): NVDA $20k &middot; MU $15k &middot; AVGO $15k.</td></tr>
-      <tr><td class="tick">Tranche 2 &mdash; 10%</td><td>Nov 4 &ndash; Dec 15 post-midterm window, or a &minus;12% QQQ drawdown &mdash; whichever comes first: GOOGL $20k + $30k added to whichever thesis is tracking best (memory pricing vs. accelerator demand).</td></tr>
-      <tr><td class="tick">Roll</td><td>At ~12 months to expiry, roll out to the next January &mdash; never ride into the theta cliff. In an IRA the roll has no tax friction. <b>In Amber, stop rolling</b>: convert gains to shares or cash instead.</td></tr>
-      <tr><td class="tick">Take profits</td><td>At +100% on a contract, sell half &mdash; the position rides on house money.</td></tr>
-      <tr><td class="tick">Cap enforcement</td><td>Quarterly: if the sleeve&rsquo;s market value exceeds 20% of portfolio, trim the excess into core equity or SGOV. The cap is a discipline, not a suggestion &mdash; and it steps down by calendar: &le;10% by mid-2028, &le;5% by Jan 2029.</td></tr>
-      <tr><td class="tick">Concentration</td><td>Max 8% of portfolio in any single underlying&rsquo;s premium.</td></tr>
-      <tr><td class="tick">Losers</td><td>Never average down a losing LEAP. If the thesis holds, roll out for time; if it doesn&rsquo;t, take the loss. Size every contract to survive a zero.</td></tr>
+      <tr><td class="tick">Structure</td><td data-label="Setting">Calls only, 0.65&ndash;0.75 delta, 18&ndash;30 months out &mdash; Jan 2029 series as they list this fall.</td></tr>
+      <tr><td class="tick">Tranche 1 &mdash; 10%</td><td data-label="Setting">Oct 1&ndash;15 window (September behind, fresh 2029 expiries): NVDA $20k &middot; MU $15k &middot; AVGO $15k.</td></tr>
+      <tr><td class="tick">Tranche 2 &mdash; 10%</td><td data-label="Setting">Nov 4 &ndash; Dec 15 post-midterm window, or a &minus;12% QQQ drawdown &mdash; whichever comes first: GOOGL $20k + $30k added to whichever thesis is tracking best (memory pricing vs. accelerator demand).</td></tr>
+      <tr><td class="tick">Roll</td><td data-label="Setting">At ~12 months to expiry, roll out to the next January &mdash; never ride into the theta cliff. In an IRA the roll has no tax friction. <b>In Amber, stop rolling</b>: convert gains to shares or cash instead.</td></tr>
+      <tr><td class="tick">Take profits</td><td data-label="Setting">At +100% on a contract, sell half &mdash; the position rides on house money.</td></tr>
+      <tr><td class="tick">Cap enforcement</td><td data-label="Setting">Quarterly: if the sleeve&rsquo;s market value exceeds 20% of portfolio, trim the excess into core equity or SGOV. The cap is a discipline, not a suggestion &mdash; and it steps down by calendar: &le;10% by mid-2028, &le;5% by Jan 2029.</td></tr>
+      <tr><td class="tick">Concentration</td><td data-label="Setting">Max 8% of portfolio in any single underlying&rsquo;s premium.</td></tr>
+      <tr><td class="tick">Losers</td><td data-label="Setting">Never average down a losing LEAP. If the thesis holds, roll out for time; if it doesn&rsquo;t, take the loss. Size every contract to survive a zero.</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -391,12 +534,12 @@
   <div class="prose">
     <p>$75,000 in SGOV, earning ~4% while it waits. It exists to buy panic &mdash; but only panic that leaves the thesis intact. Triggers are measured on QQQ from its all-time high, and each deployment uses limit orders into red days, not market orders into green ones.</p>
   </div>
-  <div class="tbl-wrap"><table>
+  <div class="tbl-wrap cards"><table class="stack ladder">
     <thead><tr><th>Trigger (QQQ)</th><th class="r">Deploy</th><th>Into</th></tr></thead>
     <tbody>
-      <tr><td class="tick">&minus;15%</td><td class="r">$25,000</td><td>Core adds at limit prices &mdash; the names above, same weights.</td></tr>
-      <tr><td class="tick">&minus;25%</td><td class="r">$25,000</td><td>Half core, half one deep-ITM LEAP (IV will be rich &mdash; go deeper ITM than usual, 0.80&Delta;).</td></tr>
-      <tr><td class="tick">&minus;35%</td><td class="r">$25,000</td><td>Highest-conviction names only. This is the 2022-style capitulation bid.</td></tr>
+      <tr><td class="tick">&minus;15%</td><td class="r" data-label="Deploy">$25,000</td><td data-label="Into">Core adds at limit prices &mdash; the names above, same weights.</td></tr>
+      <tr><td class="tick">&minus;25%</td><td class="r" data-label="Deploy">$25,000</td><td data-label="Into">Half core, half one deep-ITM LEAP (IV will be rich &mdash; go deeper ITM than usual, 0.80&Delta;).</td></tr>
+      <tr><td class="tick">&minus;35%</td><td class="r" data-label="Deploy">$25,000</td><td data-label="Into">Highest-conviction names only. This is the 2022-style capitulation bid.</td></tr>
     </tbody>
   </table></div>
   <div class="prose">
@@ -467,12 +610,12 @@
   </div>
 
   <h3>The dial</h3>
-  <div class="tbl-wrap"><table class="regime">
+  <div class="tbl-wrap cards"><table class="stack regime">
     <thead><tr><th>Regime</th><th>Trigger rule</th><th>LEAPS</th><th>Shares</th><th>Powder</th><th>Puts</th></tr></thead>
     <tbody>
-      <tr><td><span class="pill good">&#9679; Green</span></td><td>Default state. No amber tells, or only one.</td><td>Up to 20%; roll at 12 months</td><td>Full weights; ladder active</td><td>15%</td><td>None</td></tr>
-      <tr><td><span class="pill warn">&#9650; Amber</span></td><td><b>Any two</b> leading tells: AI-paper credit spreads +100 bps from tights, or a hyperscaler deal pricing &ge;7%; 10-year through ~5.5% or a term-premium breakout; GPU rental rates or revenue/MW rolling over; capex growth rate halving while still positive; core PCE trending through ~4.5% or 5y5y breakevens unanchoring; QQQ below its 200-day with SMH breaking a 12-month uptrend (tiebreaker only).</td><td>Stop rolling into new time; convert gains to shares/cash at 12 months out; sleeve &le;10%</td><td>Trim the most cyclical first (MU, SPCX, CRWV); core intact; ladder still active</td><td>Lift to 20&ndash;25%</td><td>Start the overlay: ~1%/yr, 12-month QQQ puts ~20% OTM</td></tr>
-      <tr><td><span class="pill crit">&#9632; Red</span></td><td><b>Any one</b> confirming tell: a top-4 hyperscaler capex guide <em>cut</em>; a lab exercises a 90-day out or renegotiates rent down toward $25M/MW; a neocloud default or datacenter cancelled for financing reasons; hyperscaler paper &gt;8% with cancellations; a federal training pause or broad datacenter moratorium; a depreciation-life reversal or major GPU write-down; <b>the repression break</b> &mdash; core inflation through ~5% with the Fed forced to genuinely positive real rates (funds &ge; core PCE +1.5%).</td><td>Zero. Sell first &mdash; they decay to nothing anyway</td><td>Core to ~25%: keep the cash-rich (GOOGL, MSFT, AMZN); exit spec entirely; ladder suspended</td><td>40&ndash;50%</td><td>2&ndash;3% premium in 6&ndash;12-month QQQ/SMH puts 10&ndash;15% OTM &mdash; only if vol hasn&rsquo;t already blown out; otherwise cash is the hedge</td></tr>
+      <tr><td><span class="pill good">&#9679; Green</span></td><td data-label="Trigger rule">Default state. No amber tells, or only one.</td><td data-label="LEAPS">Up to 20%; roll at 12 months</td><td data-label="Shares">Full weights; ladder active</td><td data-label="Powder">15%</td><td data-label="Puts">None</td></tr>
+      <tr><td><span class="pill warn">&#9650; Amber</span></td><td data-label="Trigger rule"><b>Any two</b> leading tells: AI-paper credit spreads +100 bps from tights, or a hyperscaler deal pricing &ge;7%; 10-year through ~5.5% or a term-premium breakout; GPU rental rates or revenue/MW rolling over; capex growth rate halving while still positive; core PCE trending through ~4.5% or 5y5y breakevens unanchoring; QQQ below its 200-day with SMH breaking a 12-month uptrend (tiebreaker only).</td><td data-label="LEAPS">Stop rolling into new time; convert gains to shares/cash at 12 months out; sleeve &le;10%</td><td data-label="Shares">Trim the most cyclical first (MU, SPCX, CRWV); core intact; ladder still active</td><td data-label="Powder">Lift to 20&ndash;25%</td><td data-label="Puts">Start the overlay: ~1%/yr, 12-month QQQ puts ~20% OTM</td></tr>
+      <tr><td><span class="pill crit">&#9632; Red</span></td><td data-label="Trigger rule"><b>Any one</b> confirming tell: a top-4 hyperscaler capex guide <em>cut</em>; a lab exercises a 90-day out or renegotiates rent down toward $25M/MW; a neocloud default or datacenter cancelled for financing reasons; hyperscaler paper &gt;8% with cancellations; a federal training pause or broad datacenter moratorium; a depreciation-life reversal or major GPU write-down; <b>the repression break</b> &mdash; core inflation through ~5% with the Fed forced to genuinely positive real rates (funds &ge; core PCE +1.5%).</td><td data-label="LEAPS">Zero. Sell first &mdash; they decay to nothing anyway</td><td data-label="Shares">Core to ~25%: keep the cash-rich (GOOGL, MSFT, AMZN); exit spec entirely; ladder suspended</td><td data-label="Powder">40&ndash;50%</td><td data-label="Puts">2&ndash;3% premium in 6&ndash;12-month QQQ/SMH puts 10&ndash;15% OTM &mdash; only if vol hasn&rsquo;t already blown out; otherwise cash is the hedge</td></tr>
     </tbody>
   </table></div>
 
@@ -519,14 +662,30 @@
 <script>
   (function(){
     var tip=document.createElement('div'); tip.id='tip'; tip.hidden=true; document.body.appendChild(tip);
+    var hideTimer=null;
+    function label(s){ return s.dataset.n.replace(/&amp;/g,'&')+' — '+s.dataset.v; }
+    function place(e){
+      var x=Math.min((e.clientX||0)+14, window.innerWidth-tip.offsetWidth-8);
+      var y=Math.min((e.clientY||0)+16, window.innerHeight-tip.offsetHeight-8);
+      if (x<8) x=8;
+      tip.style.left=x+'px'; tip.style.top=y+'px';
+    }
     document.querySelectorAll('.seg').forEach(function(s){
       s.addEventListener('mousemove',function(e){
-        tip.textContent=s.dataset.n.replace(/&amp;/g,'&')+' — '+s.dataset.v;
+        if (document.documentElement.classList.contains('mobile')) return;
+        tip.textContent=label(s);
         tip.hidden=false;
-        var x=Math.min(e.clientX+14, window.innerWidth-tip.offsetWidth-8);
-        tip.style.left=x+'px'; tip.style.top=(e.clientY+16)+'px';
+        place(e);
       });
-      s.addEventListener('mouseleave',function(){ tip.hidden=true; });
+      s.addEventListener('mouseleave',function(){ if (!document.documentElement.classList.contains('mobile')) tip.hidden=true; });
+      s.addEventListener('click',function(e){
+        if (!document.documentElement.classList.contains('mobile')) return;
+        tip.textContent=label(s);
+        tip.hidden=false;
+        place(e);
+        clearTimeout(hideTimer);
+        hideTimer=setTimeout(function(){ tip.hidden=true; }, 1800);
+      });
     });
   })();
 
@@ -609,3 +768,6 @@
     }).catch(function(){ /* no data source here — strip stays hidden */ });
   })();
 </script>
+</body>
+</html>
+
