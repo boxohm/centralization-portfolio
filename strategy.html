@@ -62,7 +62,6 @@
     font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
     font-size:16.5px; line-height:1.62;
     -webkit-font-smoothing:antialiased;
-    overflow-x:clip;
   }
   .wrap{max-width:920px; margin:0 auto; padding:0 24px 96px; overflow-wrap:break-word}
   .prose{max-width:730px}
@@ -117,7 +116,7 @@
   .part .eyebrow{color:var(--accent-ink)}
   .part h2{font-size:15px; font-weight:700; letter-spacing:.02em; text-transform:uppercase; color:var(--ink-2)}
   .part .span{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3)}
-  section{padding:40px 0 8px}
+  section{padding:40px 0 8px; scroll-margin-top:12px}
   .sec-head{display:flex; align-items:baseline; gap:14px; border-bottom:1px solid var(--line-strong); padding-bottom:10px; margin-bottom:22px}
   .sec-head .n{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--accent-ink); font-weight:600}
   .sec-head h2{font-size:24px; font-weight:700; letter-spacing:-.01em}
@@ -231,6 +230,7 @@
 
     .summary{grid-template-columns:1fr; margin:24px 0 8px}
     .sum{padding:16px}
+    .sum p{font-size:16px}
 
     .toc{grid-template-columns:1fr; gap:0; margin-top:18px}
     .toc a{min-height:44px; padding:12px 0; font-size:14.5px; touch-action:manipulation}
@@ -254,7 +254,7 @@
     .seg .pct{display:none}
     .legend{grid-template-columns:1fr}
     .lg{flex-wrap:wrap; gap:6px 10px}
-    .lg .val{margin-left:0; white-space:normal}
+    .lg .val{white-space:normal}
 
     .modes{grid-template-columns:1fr}
     .mode .hit{overflow-wrap:anywhere}
@@ -262,6 +262,9 @@
 
     .timeline li{padding-left:28px}
     .timeline .amt{display:block; margin:2px 0 0}
+    .timeline p{font-size:16px}
+    .phase p{font-size:16px}
+    .mode p{font-size:16px}
 
     ul.flat .src{float:none; display:block; white-space:normal; margin:2px 0 6px}
     ul.flat li{padding:14px 0}
@@ -272,10 +275,7 @@
       overflow:visible; border:0; border-radius:0; margin:16px 0;
     }
     table.stack, table.stack tbody{display:block; width:100%}
-    table.stack thead{
-      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
-    }
+    table.stack thead{display:none}
     table.stack tbody tr{
       display:block; background:var(--bg-raised); border:1px solid var(--line);
       border-radius:10px; padding:14px 16px; margin:0 0 10px;
@@ -312,13 +312,13 @@
     table.tickets td.tick::before{display:none; content:none}
     table.tickets td:nth-child(2){grid-area:wt; padding:4px 0 0; font-size:14px}
     table.tickets td:nth-child(3){grid-area:dol; padding:4px 0 0; font-size:14px}
-    table.tickets td:nth-child(4){grid-area:why; padding:10px 0 0; color:var(--ink-2); font-size:14.5px; line-height:1.5}
+    table.tickets td:nth-child(4){grid-area:why; padding:10px 0 0; color:var(--ink-2); font-size:16px; line-height:1.5}
     table.tickets td:nth-child(4)::before{margin-bottom:4px}
 
     /* LEAPS / 2-col rules: rule as title */
     table.rules td.tick{font-size:15px; padding-bottom:2px}
     table.rules td.tick::before{display:none; content:none}
-    table.rules td:last-child{color:var(--ink-2); font-size:14.5px; line-height:1.5}
+    table.rules td:last-child{color:var(--ink-2); font-size:16px; line-height:1.5}
 
     /* Powder ladder: trigger title, deploy + into */
     table.ladder tbody tr{
@@ -330,17 +330,14 @@
     table.ladder td.tick{grid-area:tick; font-size:18px}
     table.ladder td.tick::before{display:none; content:none}
     table.ladder td:nth-child(2){grid-area:dep}
-    table.ladder td:nth-child(3){grid-area:into; padding-top:8px; color:var(--ink-2); font-size:14.5px}
+    table.ladder td:nth-child(3){grid-area:into; padding-top:8px; color:var(--ink-2); font-size:16px}
 
     /* Regime dial: one card per regime, labeled rows */
     table.regime td:first-child{padding-bottom:8px; margin-bottom:6px; border-bottom:1px solid var(--line)}
     table.regime td:first-child::before{display:none; content:none}
-    table.regime td{font-size:14.5px; line-height:1.5}
+    table.regime td{font-size:16px; line-height:1.5}
 
     #tip{max-width:min(280px, calc(100vw - 16px)); white-space:normal}
-  }
-  @media (max-width:420px){
-    .live-grid{grid-template-columns:1fr}
   }
   @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
 </style>
