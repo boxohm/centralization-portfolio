@@ -32,33 +32,33 @@
   "value": 0.8892
  },
  "ig_oas": {
-  "date": "2026-09-07",
+  "date": "2026-09-08",
   "value": 0.81,
   "tight_52w": 0.73,
   "widening_bps": 8
  },
  "hy_oas": {
-  "date": "2026-09-07",
-  "value": 2.68,
+  "date": "2026-09-08",
+  "value": 2.67,
   "tight_52w": 2.6,
-  "widening_bps": 8
+  "widening_bps": 7
  },
  "qqq": {
-  "date": "2026-09-08",
-  "close": 718.36,
+  "date": "2026-09-09",
+  "close": 716.04,
   "ath": 746.16,
-  "drawdown_pct": -3.7,
+  "drawdown_pct": -4.0,
   "above_200dma": true,
   "src": "massive"
  },
  "smh": {
-  "date": "2026-09-08",
-  "close": 573.73,
+  "date": "2026-09-09",
+  "close": 574.48,
   "above_252dma": true,
   "src": "massive"
  },
  "vol": {
-  "date": "2026-09-08",
+  "date": "2026-09-09",
   "value": 12.8,
   "kind": "QQQ 20d realized",
   "src": "massive"
@@ -67,7 +67,7 @@
   "date": "2026-08-31",
   "bills_pct": 22.8
  },
- "as_of": "2026-09-09 00:39 UTC",
+ "as_of": "2026-09-09 16:55 UTC",
  "real_policy_rate": 0.29,
  "repression_on": true,
  "amber_tells": [],
