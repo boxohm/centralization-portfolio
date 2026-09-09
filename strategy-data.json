@@ -45,7 +45,7 @@
  },
  "qqq": {
   "date": "2026-09-09",
-  "close": 716.04,
+  "close": 716.42,
   "ath": 746.16,
   "drawdown_pct": -4.0,
   "above_200dma": true,
@@ -53,7 +53,7 @@
  },
  "smh": {
   "date": "2026-09-09",
-  "close": 574.48,
+  "close": 574.01,
   "above_252dma": true,
   "src": "massive"
  },
@@ -67,7 +67,7 @@
   "date": "2026-08-31",
   "bills_pct": 22.8
  },
- "as_of": "2026-09-09 16:55 UTC",
+ "as_of": "2026-09-09 19:33 UTC",
  "real_policy_rate": 0.29,
  "repression_on": true,
  "amber_tells": [],
