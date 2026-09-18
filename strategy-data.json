@@ -45,15 +45,15 @@
  },
  "qqq": {
   "date": "2026-09-18",
-  "close": 716.28,
+  "close": 719.28,
   "ath": 746.16,
-  "drawdown_pct": -4.0,
+  "drawdown_pct": -3.6,
   "above_200dma": true,
   "src": "massive"
  },
  "smh": {
   "date": "2026-09-18",
-  "close": 563.87,
+  "close": 565.46,
   "above_252dma": true,
   "src": "massive"
  },
@@ -67,7 +67,7 @@
   "date": "2026-08-31",
   "bills_pct": 22.8
  },
- "as_of": "2026-09-18 16:46 UTC",
+ "as_of": "2026-09-18 19:16 UTC",
  "real_policy_rate": 0.29,
  "repression_on": true,
  "amber_tells": [],
