@@ -1,7 +1,7 @@
 {
  "fed_funds": {
-  "date": "2026-09-16",
-  "value": 3.63
+  "date": "2026-09-17",
+  "value": 3.88
  },
  "core_pce": {
   "date": "2026-07-01",
@@ -12,20 +12,20 @@
   "yoy": 2.45
  },
  "ust10y": {
-  "date": "2026-09-16",
-  "value": 5.01
+  "date": "2026-09-17",
+  "value": 4.94
  },
  "ust30y": {
-  "date": "2026-09-16",
-  "value": 5.35
+  "date": "2026-09-17",
+  "value": 5.29
  },
  "bill3m": {
-  "date": "2026-09-16",
-  "value": 3.99
+  "date": "2026-09-17",
+  "value": 3.97
  },
  "breakeven_5y5y": {
-  "date": "2026-09-17",
-  "value": 2.34
+  "date": "2026-09-18",
+  "value": 2.35
  },
  "term_premium": {
   "date": "2026-09-11",
@@ -45,21 +45,21 @@
  },
  "qqq": {
   "date": "2026-09-18",
-  "close": 719.28,
+  "close": 721.45,
   "ath": 746.16,
-  "drawdown_pct": -3.6,
+  "drawdown_pct": -3.3,
   "above_200dma": true,
   "src": "massive"
  },
  "smh": {
   "date": "2026-09-18",
-  "close": 565.46,
+  "close": 573,
   "above_252dma": true,
   "src": "massive"
  },
  "vol": {
   "date": "2026-09-18",
-  "value": 13.1,
+  "value": 13.2,
   "kind": "QQQ 20d realized",
   "src": "massive"
  },
@@ -67,9 +67,9 @@
   "date": "2026-08-31",
   "bills_pct": 22.8
  },
- "as_of": "2026-09-18 19:16 UTC",
- "real_policy_rate": 0.29,
- "repression_on": true,
+ "as_of": "2026-09-18 21:42 UTC",
+ "real_policy_rate": 0.54,
+ "repression_on": false,
  "amber_tells": [],
  "red_flags": [],
  "manual_flags": {
