@@ -1,6 +1,6 @@
 {
  "fed_funds": {
-  "date": "2026-09-17",
+  "date": "2026-09-18",
   "value": 3.88
  },
  "core_pce": {
@@ -12,19 +12,19 @@
   "yoy": 2.45
  },
  "ust10y": {
-  "date": "2026-09-17",
-  "value": 4.94
+  "date": "2026-09-18",
+  "value": 5.01
  },
  "ust30y": {
-  "date": "2026-09-17",
-  "value": 5.29
+  "date": "2026-09-18",
+  "value": 5.34
  },
  "bill3m": {
-  "date": "2026-09-17",
-  "value": 3.97
+  "date": "2026-09-18",
+  "value": 3.99
  },
  "breakeven_5y5y": {
-  "date": "2026-09-18",
+  "date": "2026-09-21",
   "value": 2.35
  },
  "term_premium": {
@@ -45,26 +45,29 @@
  },
  "qqq": {
   "date": "2026-09-21",
-  "close": 739.92,
+  "close": 741.47,
   "ath": 746.16,
-  "drawdown_pct": -0.8,
+  "drawdown_pct": -0.6,
   "above_200dma": true,
   "src": "massive"
  },
  "smh": {
   "date": "2026-09-21",
-  "close": 593.92,
+  "close": 596.03,
   "above_252dma": true,
   "src": "massive"
  },
  "vol": {
   "date": "2026-09-21",
-  "value": 15.8,
+  "value": 16.3,
   "kind": "QQQ 20d realized",
   "src": "massive"
  },
- "bills_share": null,
- "as_of": "2026-09-21 18:22 UTC",
+ "bills_share": {
+  "date": "2026-08-31",
+  "bills_pct": 22.8
+ },
+ "as_of": "2026-09-21 22:09 UTC",
  "real_policy_rate": 0.54,
  "repression_on": false,
  "amber_tells": [],
@@ -79,7 +82,5 @@
   "depreciation_reversal": false
  },
  "regime": "GREEN",
- "errors": [
-  "bills_share: RuntimeError curl exit 28 for https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/debt/mspd/mspd_table_1?page%5Bsize%5D=40&sort=-record_date"
- ]
+ "errors": []
 }
