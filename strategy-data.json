@@ -24,8 +24,8 @@
   "value": 4.08
  },
  "breakeven_5y5y": {
-  "date": "2026-09-24",
-  "value": 2.33
+  "date": "2026-09-25",
+  "value": 2.34
  },
  "term_premium": {
   "date": "2026-09-18",
@@ -67,7 +67,7 @@
   "date": "2026-08-31",
   "bills_pct": 22.8
  },
- "as_of": "2026-09-25 20:43 UTC",
+ "as_of": "2026-09-26 00:54 UTC",
  "real_policy_rate": 0.54,
  "repression_on": false,
  "amber_tells": [],
