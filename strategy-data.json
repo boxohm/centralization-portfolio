@@ -4,8 +4,8 @@
   "value": 3.88
  },
  "core_pce": {
-  "date": "2026-07-01",
-  "yoy": 3.34
+  "date": "2026-08-01",
+  "yoy": 3.01
  },
  "core_cpi": {
   "date": "2026-08-01",
@@ -32,34 +32,34 @@
   "value": 1.0203
  },
  "ig_oas": {
-  "date": "2026-09-28",
-  "value": 0.83,
+  "date": "2026-09-29",
+  "value": 0.84,
   "tight_52w": 0.73,
-  "widening_bps": 10
+  "widening_bps": 11
  },
  "hy_oas": {
-  "date": "2026-09-28",
-  "value": 3.02,
+  "date": "2026-09-29",
+  "value": 3.08,
   "tight_52w": 2.6,
-  "widening_bps": 42
+  "widening_bps": 48
  },
  "qqq": {
-  "date": "2026-09-29",
-  "close": 737.93,
+  "date": "2026-09-30",
+  "close": 743.85,
   "ath": 747.46,
-  "drawdown_pct": -1.3,
+  "drawdown_pct": -0.5,
   "above_200dma": true,
   "src": "massive"
  },
  "smh": {
-  "date": "2026-09-29",
-  "close": 606.9,
+  "date": "2026-09-30",
+  "close": 609.21,
   "above_252dma": true,
   "src": "massive"
  },
  "vol": {
-  "date": "2026-09-29",
-  "value": 16.0,
+  "date": "2026-09-30",
+  "value": 15.2,
   "kind": "QQQ 20d realized",
   "src": "massive"
  },
@@ -67,8 +67,8 @@
   "date": "2026-08-31",
   "bills_pct": 22.8
  },
- "as_of": "2026-09-30 01:36 UTC",
- "real_policy_rate": 0.54,
+ "as_of": "2026-09-30 18:11 UTC",
+ "real_policy_rate": 0.87,
  "repression_on": false,
  "amber_tells": [],
  "red_flags": [],
