@@ -1,6 +1,6 @@
 {
  "fed_funds": {
-  "date": "2026-10-01",
+  "date": "2026-10-02",
   "value": 3.88
  },
  "core_pce": {
@@ -12,54 +12,54 @@
   "yoy": 2.45
  },
  "ust10y": {
-  "date": "2026-10-01",
-  "value": 5.24
+  "date": "2026-10-02",
+  "value": 5.28
  },
  "ust30y": {
-  "date": "2026-10-01",
-  "value": 5.61
+  "date": "2026-10-02",
+  "value": 5.63
  },
  "bill3m": {
-  "date": "2026-10-01",
-  "value": 4.0
+  "date": "2026-10-02",
+  "value": 4.01
  },
  "breakeven_5y5y": {
-  "date": "2026-10-02",
-  "value": 2.35
+  "date": "2026-10-05",
+  "value": 2.36
  },
  "term_premium": {
   "date": "2026-09-25",
   "value": 1.0203
  },
  "ig_oas": {
-  "date": "2026-10-01",
-  "value": 0.86,
+  "date": "2026-10-02",
+  "value": 0.85,
   "tight_52w": 0.73,
-  "widening_bps": 13
+  "widening_bps": 12
  },
  "hy_oas": {
-  "date": "2026-10-01",
-  "value": 3.24,
+  "date": "2026-10-02",
+  "value": 3.1,
   "tight_52w": 2.6,
-  "widening_bps": 64
+  "widening_bps": 50
  },
  "qqq": {
-  "date": "2026-10-02",
-  "close": 749.58,
-  "ath": 749.58,
+  "date": "2026-10-05",
+  "close": 756.2,
+  "ath": 756.2,
   "drawdown_pct": 0.0,
   "above_200dma": true,
   "src": "massive"
  },
  "smh": {
-  "date": "2026-10-02",
-  "close": 630.6,
+  "date": "2026-10-05",
+  "close": 633.9,
   "above_252dma": true,
   "src": "massive"
  },
  "vol": {
-  "date": "2026-10-02",
-  "value": 15.0,
+  "date": "2026-10-05",
+  "value": 15.2,
   "kind": "QQQ 20d realized",
   "src": "massive"
  },
@@ -67,7 +67,7 @@
   "date": "2026-08-31",
   "bills_pct": 22.8
  },
- "as_of": "2026-10-03 01:27 UTC",
+ "as_of": "2026-10-06 02:31 UTC",
  "real_policy_rate": 0.87,
  "repression_on": false,
  "amber_tells": [],
