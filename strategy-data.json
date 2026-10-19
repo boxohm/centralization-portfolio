@@ -1,6 +1,6 @@
 {
  "fed_funds": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "value": 3.88
  },
  "core_pce": {
@@ -12,20 +12,20 @@
   "yoy": 2.57
  },
  "ust10y": {
-  "date": "2026-10-15",
-  "value": 5.1
+  "date": "2026-10-16",
+  "value": 5.09
  },
  "ust30y": {
-  "date": "2026-10-15",
+  "date": "2026-10-16",
   "value": 5.43
  },
  "bill3m": {
-  "date": "2026-10-15",
-  "value": 4.1
+  "date": "2026-10-16",
+  "value": 4.08
  },
  "breakeven_5y5y": {
-  "date": "2026-10-16",
-  "value": 2.33
+  "date": "2026-10-19",
+  "value": 2.32
  },
  "term_premium": {
   "date": "2026-10-09",
@@ -45,7 +45,7 @@
  },
  "qqq": {
   "date": "2026-10-19",
-  "close": 718.66,
+  "close": 718.36,
   "ath": 759.66,
   "drawdown_pct": -5.4,
   "above_200dma": true,
@@ -53,7 +53,7 @@
  },
  "smh": {
   "date": "2026-10-19",
-  "close": 548.83,
+  "close": 548.46,
   "above_252dma": true,
   "src": "massive"
  },
@@ -67,7 +67,7 @@
   "date": "2026-09-30",
   "bills_pct": 22.4
  },
- "as_of": "2026-10-19 18:52 UTC",
+ "as_of": "2026-10-19 22:40 UTC",
  "real_policy_rate": 0.87,
  "repression_on": false,
  "amber_tells": [],
