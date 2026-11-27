@@ -60,11 +60,8 @@
   "kind": "QQQ 20d realized",
   "src": "massive"
  },
- "bills_share": {
-  "date": "2026-10-31",
-  "bills_pct": 23.0
- },
- "as_of": "2026-11-26 21:59 UTC",
+ "bills_share": null,
+ "as_of": "2026-11-27 04:34 UTC",
  "real_policy_rate": 0.62,
  "repression_on": false,
  "amber_tells": [],
@@ -79,5 +76,7 @@
   "depreciation_reversal": false
  },
  "regime": "GREEN",
- "errors": []
+ "errors": [
+  "bills_share: RuntimeError curl exit 22 for https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/debt/mspd/mspd_table_1?page%5Bsize%5D=40&sort=-record_date"
+ ]
 }
