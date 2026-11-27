@@ -1,6 +1,6 @@
 {
  "fed_funds": {
-  "date": "2026-11-24",
+  "date": "2026-11-26",
   "value": 3.88
  },
  "core_pce": {
@@ -9,16 +9,16 @@
  },
  "core_cpi": null,
  "ust10y": {
-  "date": "2026-11-24",
-  "value": 4.91
+  "date": "2026-11-25",
+  "value": 4.85
  },
  "ust30y": {
-  "date": "2026-11-24",
-  "value": 5.3
+  "date": "2026-11-25",
+  "value": 5.24
  },
  "bill3m": {
-  "date": "2026-11-24",
-  "value": 4.18
+  "date": "2026-11-25",
+  "value": 4.16
  },
  "breakeven_5y5y": {
   "date": "2026-11-25",
@@ -29,39 +29,42 @@
   "value": 0.8888
  },
  "ig_oas": {
-  "date": "2026-11-24",
-  "value": 0.98,
+  "date": "2026-11-26",
+  "value": 0.99,
   "tight_52w": 0.73,
-  "widening_bps": 25
+  "widening_bps": 26
  },
  "hy_oas": {
-  "date": "2026-11-24",
-  "value": 3.72,
+  "date": "2026-11-26",
+  "value": 3.77,
   "tight_52w": 2.6,
-  "widening_bps": 112
+  "widening_bps": 117
  },
  "qqq": {
-  "date": "2026-11-25",
-  "close": 633.93,
+  "date": "2026-11-27",
+  "close": 650.99,
   "ath": 759.66,
-  "drawdown_pct": -16.6,
+  "drawdown_pct": -14.3,
   "above_200dma": false,
   "src": "massive"
  },
  "smh": {
-  "date": "2026-11-25",
-  "close": 422.46,
+  "date": "2026-11-27",
+  "close": 440.06,
   "above_252dma": false,
   "src": "massive"
  },
  "vol": {
-  "date": "2026-11-25",
-  "value": 47.8,
+  "date": "2026-11-27",
+  "value": 49.1,
   "kind": "QQQ 20d realized",
   "src": "massive"
  },
- "bills_share": null,
- "as_of": "2026-11-27 04:34 UTC",
+ "bills_share": {
+  "date": "2026-10-31",
+  "bills_pct": 23.0
+ },
+ "as_of": "2026-11-27 21:43 UTC",
  "real_policy_rate": 0.62,
  "repression_on": false,
  "amber_tells": [],
@@ -76,7 +79,5 @@
   "depreciation_reversal": false
  },
  "regime": "GREEN",
- "errors": [
-  "bills_share: RuntimeError curl exit 22 for https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/debt/mspd/mspd_table_1?page%5Bsize%5D=40&sort=-record_date"
- ]
+ "errors": []
 }
